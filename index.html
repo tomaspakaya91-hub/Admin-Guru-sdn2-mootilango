@@ -1179,7 +1179,8 @@ function saveGrade(e) {
 }
 
 // ============================================================================
-// 10. HALAMAN: JURNAL MENGAJAR HARIAN
+// ============================================================================
+// 10. HALAMAN: JURNAL MENGAJAR HARIAN (TERINTEGRASI TP/ATP)
 // ============================================================================
 function renderJournals() {
   const list = store.get("journals", []);
@@ -1207,18 +1208,39 @@ function renderJournals() {
 }
 
 function openJournalForm() {
+  const tps = store.get("tp", []);
   openModal("Catat Jurnal Mengajar", `
     <form onsubmit="saveJournal(event)">
       <div class="form-grid-3">
         <div class="field"><label>Tanggal</label><input type="date" name="date" value="${new Date().toISOString().slice(0,10)}" required></div>
-        <div class="field"><label>Kelas</label><select name="classroom">${[1,2,3,4,5,6].map(k=>`<option value="${k}">Kelas ${k}</option>`).join("")}</select></div>
-        <div class="field"><label>Mata Pelajaran</label><select name="subject">${Object.keys(CP_2025).map(m=>`<option>${esc(m)}</option>`).join("")}</select></div>
+        <div class="field"><label>Kelas</label><select id="jClass" name="classroom">${[1,2,3,4,5,6].map(k=>`<option value="${k}">Kelas ${k}</option>`).join("")}</select></div>
+        <div class="field"><label>Mata Pelajaran</label><select id="jSubj" name="subject">${Object.keys(CP_2025).map(m=>`<option>${esc(m)}</option>`).join("")}</select></div>
       </div>
-      <div class="field"><label>Materi Pokok / Tujuan Pembelajaran (TP)</label><textarea name="topic" rows="2" required></textarea></div>
-      <div class="field"><label>Catatan Pelaksanaan, Kendala & Refleksi</label><textarea name="reflection" rows="3" required></textarea></div>
+      ${tps.length ? `
+      <div class="field">
+        <label>🎯 Tarik Otomatis dari Daftar TP / ATP (Opsional)</label>
+        <select onchange="applyTPToJournal(this.value)">
+          <option value="">-- Pilih TP tersimpan untuk mengisi materi --</option>
+          ${tps.map(t => `<option value="${t.id}">[${esc(t.kode)}] Kelas ${esc(t.kelas)} • ${esc(t.mapel)} — ${esc(t.tp.slice(0,65))}...</option>`).join("")}
+        </select>
+      </div>` : ""}
+      <div class="field"><label>Materi Pokok / Tujuan Pembelajaran (TP)</label><textarea id="jTopic" name="topic" rows="2" required></textarea></div>
+      <div class="field"><label>Catatan Pelaksanaan, Kendala & Refleksi</label><textarea name="reflection" rows="3" required placeholder="Contoh: 85% murid mencapai tujuan pembelajaran; tindak lanjut pendampingan kelompok..."></textarea></div>
       <button class="btn primary" type="submit">💾 Simpan Jurnal</button>
     </form>
   `);
+}
+
+function applyTPToJournal(tpId) {
+  if (!tpId) return;
+  const t = store.get("tp", []).find(x => String(x.id) === String(tpId));
+  if (!t) return;
+  $("#jClass").value = t.kelas;
+  const subjSel = $("#jSubj");
+  for (let opt of subjSel.options) {
+    if (opt.value.toLowerCase().includes(t.mapel.toLowerCase())) { subjSel.value = opt.value; break; }
+  }
+  $("#jTopic").value = `[${t.kode}] ${t.tp} (${t.alokasi})`;
 }
 
 function saveJournal(e) {
@@ -1263,18 +1285,74 @@ function renderDocManager(category, title, desc) {
 }
 
 function openDocForm(category, label) {
+  const tps = store.get("tp", []);
   openModal(`Buat ${label}`, `
     <form onsubmit="saveDoc(event, '${category}')">
-      <div class="field"><label>Judul Dokumen</label><input name="title" required placeholder="Contoh: Modul Ajar Bab 1 - Bilangan Cacah"></div>
+      <div class="field"><label>Judul Dokumen</label><input id="docTitle" name="title" required placeholder="Contoh: Perangkat Pembelajaran Semester Ganjil"></div>
       <div class="form-grid-3">
-        <div class="field"><label>Kelas</label><select name="classroom">${[1,2,3,4,5,6].map(k=>`<option value="${k}">Kelas ${k}</option>`).join("")}</select></div>
-        <div class="field"><label>Mata Pelajaran</label><select name="subject">${Object.keys(CP_2025).map(m=>`<option>${esc(m)}</option>`).join("")}</select></div>
+        <div class="field"><label>Kelas</label><select id="docClass" name="classroom">${[1,2,3,4,5,6].map(k=>`<option value="${k}">Kelas ${k}</option>`).join("")}</select></div>
+        <div class="field"><label>Mata Pelajaran</label><select id="docSubj" name="subject">${Object.keys(CP_2025).map(m=>`<option>${esc(m)}</option>`).join("")}</select></div>
         <div class="field"><label>Tahun / Semester</label><input name="semester" value="2026/2027 - Ganjil"></div>
       </div>
-      <div class="field"><label>Isi / Rancangan Perangkat</label><textarea name="body" rows="6" required placeholder="Tuliskan tujuan pembelajaran, langkah kegiatan (memahami, mengaplikasi, merefleksi), dan asesmen..."></textarea></div>
+
+      <div class="card" style="background:#f8fafc;padding:12px;margin-bottom:14px">
+        <label style="margin-bottom:8px">⚡ Generator Otomatis Selaras CP BSKAP 046/2025 & TP/ATP</label>
+        <div class="actions">
+          <select id="docTPSelect" style="flex:1;min-width:220px">
+            <option value="">-- Pilih TP dari Daftar TP/ATP --</option>
+            ${tps.map(t => `<option value="${t.id}">[${esc(t.kode)}] Kelas ${esc(t.kelas)} • ${esc(t.mapel)} (${esc(t.alokasi)})</option>`).join("")}
+          </select>
+          <button type="button" class="btn sm primary" onclick="insertTPIntoDoc('${category}')">+ Sisipkan TP</button>
+          <button type="button" class="btn sm" onclick="insertJuknisTemplate('${category}')">📄 Isi Kerangka Juknis</button>
+        </div>
+      </div>
+
+      <div class="field"><label>Isi / Rancangan Perangkat</label><textarea id="docBody" name="body" rows="8" required placeholder="Klik 'Isi Kerangka Juknis' atau 'Sisipkan TP' di atas untuk mengisi otomatis..."></textarea></div>
       <button class="btn primary" type="submit">💾 Simpan Dokumen</button>
     </form>
   `);
+}
+
+function insertTPIntoDoc(category) {
+  const tpId = $("#docTPSelect")?.value;
+  if (!tpId) return alert("Pilih salah satu Tujuan Pembelajaran (TP) terlebih dahulu.");
+  const t = store.get("tp", []).find(x => String(x.id) === String(tpId));
+  if (!t) return;
+
+  $("#docClass").value = t.kelas;
+  const subjSel = $("#docSubj");
+  for (let opt of subjSel.options) {
+    if (opt.value.toLowerCase().includes(t.mapel.toLowerCase())) { subjSel.value = opt.value; break; }
+  }
+  if (!$("#docTitle").value) {
+    $("#docTitle").value = `${category === 'planning' ? 'Prota & Promes' : category === 'module' ? 'Modul Ajar' : 'Perangkat'} - ${t.mapel} (${t.kode})`;
+  }
+  const line = `• [${t.kode}] (${t.alokasi}): ${t.tp}\n`;
+  $("#docBody").value += ($("#docBody").value ? "\n" : "") + line;
+}
+
+function insertJuknisTemplate(category) {
+  const k = $("#docClass").value;
+  const subj = $("#docSubj").value;
+  const fase = k <= 2 ? "Fase A (Kelas 1–2)" : k <= 4 ? "Fase B (Kelas 3–4)" : "Fase C (Kelas 5–6)";
+  const cpList = (CP_2025[subj] && CP_2025[subj][fase]) || [];
+  const cpSummary = cpList.map(c => `- Elemen ${c.el}: ${c.desc}`).join("\n");
+  const matchingTPs = store.get("tp", []).filter(t => String(t.kelas) === String(k) && t.mapel.toLowerCase().includes(subj.toLowerCase()));
+  const tpSummary = matchingTPs.length
+    ? matchingTPs.map(t => `1. [${t.kode}] ${t.tp} — Alokasi: ${t.alokasi}`).join("\n")
+    : "1. [Isi Kode TP] Rumusan Tujuan Pembelajaran — Alokasi: ... JP";
+
+  const templates = {
+    planning: `PROGRAM TAHUNAN (PROTA), PROGRAM SEMESTER (PROMES) & ATP\nAcuan Regulasi: Keputusan Kepala BSKAP No. 046/H/KR/2025\nFase / Kelas: ${fase} / Kelas ${k}\nMata Pelajaran: ${subj}\n\nA. CAPAIAN PEMBELAJARAN (CP 2025):\n${cpSummary || "- Sesuaikan dengan CP BSKAP 046/2025"}\n\nB. ALUR TUJUAN PEMBELAJARAN (ATP) & DISTRIBUSI WAKTU:\n${tpSummary}\n\nC. DISTRIBUSI MINGGU EFEKTIF (TP 2026/2027):\n- Semester Ganjil (Juli – Desember 2026): 18 Minggu Efektif (Termasuk Asesmen Sumatif & Kokurikuler)\n- Semester Genap (Januari – Juni 2027): ${k == 6 ? "14 Minggu Efektif (Kelas VI)" : "18 Minggu Efektif"}\n- Alokasi Kokurikuler / Penguatan Profil Lulusan: Terintegrasi sesuai struktur kurikulum SD.`,
+    module: `MODUL AJAR / RPP PENDEKATAN PEMBELAJARAN MENDALAM\nSatuan Pendidikan: ${SCHOOL.name} (NPSN ${SCHOOL.npsn})\nFase / Kelas: ${fase} / Kelas ${k} | Mapel: ${subj}\n\n1. TUJUAN PEMBELAJARAN (TP):\n${tpSummary}\n\n2. DIMENSI PROFIL LULUSAN & PRINSIP PEMBELAJARAN:\n- Berkesadaran (Mindful), Bermakna (Meaningful), dan Menggembirakan (Joyful)\n\n3. LANGKAH-LANGKAH PEMBELAJARAN:\n- Pendahuluan (10 Menit): Salam, doa, apersepsi kontekstual, dan penyampaian tujuan belajar.\n- Kegiatan Inti (50 Menit):\n  a) Memahami: Murid mengeksplorasi konsep melalui pengamatan/tanya jawab pemantik.\n  b) Mengaplikasi: Murid berkolaborasi menyelesaikan tantangan/LKPD nyata.\n  c) Merefleksi: Murid menyimpulkan pemahaman dan melakukan refleksi diri.\n- Penutup (10 Menit): Umpan balik, penguatan, dan doa penutup.\n\n4. ASESMEN:\n- Asesmen Awal (Diagnostik), Asesmen Proses (Formatif/Observasi), dan Asesmen Akhir (Sumatif).`,
+    lkpd: `LEMBAR KERJA PESERTA DIDIK (LKPD)\nNama Murid: ........................................ | Kelas: ${k} | Mapel: ${subj}\n\nA. TUJUAN PEMBELAJARAN:\n${tpSummary}\n\nB. PETUNJUK BELAJAR:\n1. Berdoalah sebelum mengerjakan tugas.\n2. Bacalah setiap langkah kegiatan dengan cermat bersama kelompokmu.\n\nC. AKTIVITAS & TUGAS:\n1. Mengamati & Memahami: ...\n2. Mencoba & Mengaplikasi: ...\n3. Menyimpulkan & Merefleksi: ...`,
+    questions: `KISI-KISI & NASKAH SOAL ASESMEN SUMATIF\nSatuan Pendidikan: ${SCHOOL.name} | Kelas: ${k} | Mapel: ${subj}\n\nA. KISI-KISI PENULISAN SOAL:\n${tpSummary}\n\nB. BUTIR SOAL:\n1. [Pilihan Ganda] ...\n   a. ...   b. ...   c. ...   d. ...\n2. [Isian Singkat] ...\n3. [Uraian HOTS] ...\n\nC. KUNCI JAWABAN & PEDOMAN PENSKORAN:\n- Skor Maksimal = 100 | Nilai = (Skor Perolehan / Skor Maksimal) x 100`
+  };
+
+  $("#docBody").value = templates[category] || templates.module;
+  if (!$("#docTitle").value) {
+    $("#docTitle").value = `${category === 'planning' ? 'Prota, Promes & ATP' : category === 'module' ? 'Modul Ajar' : category === 'lkpd' ? 'LKPD' : 'Bank Soal'} ${subj} Kelas ${k}`;
+  }
 }
 
 function saveDoc(e, category) {
@@ -1294,13 +1372,21 @@ function viewDoc(id) {
   const d = store.get("docs", []).find(x => x.id === id);
   if (!d) return;
   openModal(d.title, `
+    <div style="border-bottom:2px solid #0f294a;padding-bottom:10px;margin-bottom:14px">
+      <strong style="font-size:15px;color:#0f294a">${SCHOOL.name}</strong><br>
+      <small class="sub">${SCHOOL.address} • NPSN ${SCHOOL.npsn}</small>
+    </div>
     <div style="margin-bottom:12px">
       <span class="tag blue">Kelas ${esc(d.classroom)}</span>
       <span class="tag green">${esc(d.subject)}</span>
       <span class="tag gray">${esc(d.semester)}</span>
     </div>
     <div style="white-space:pre-wrap;background:#f8fafc;padding:16px;border-radius:12px;border:1px solid var(--line);line-height:1.7">${esc(d.body)}</div>
-    <div class="actions" style="margin-top:16px"><button class="btn primary" onclick="window.print()">🖨️ Cetak Dokumen</button></div>
+    <div style="display:flex;justify-content:space-between;margin-top:20px;font-size:12.5px">
+      <div>Mengetahui,<br>Kepala Sekolah<br><br><br><b>${SCHOOL.headmaster}</b><br>NIP. ${SCHOOL.headmasterNip}</div>
+      <div style="text-align:right">Mootilango, ...................... 2026<br>Guru Kelas / Mapel<br><br><br><b>........................................</b><br>NIP. ..................................</div>
+    </div>
+    <div class="actions" style="margin-top:16px"><button class="btn primary" onclick="window.print()">🖨️ Cetak Dokumen Resmi</button></div>
   `);
 }
 
@@ -1347,10 +1433,11 @@ function renderSettings() {
   return `
     ${pageHeader("Pengaturan & Pencadangan Data", "Kelola cadangan data JSON perangkat Anda.")}
     <div class="card">
-      <h2>💾 Backup & Reset Data Lokal</h2>
-      <p class="sub">Seluruh 97 data siswa, 9 data PTK, serta catatan presensi, nilai, dan perangkat ajar tersimpan aman di penyimpanan browser perangkat ini.</p>
+      <h2>💾 Backup, Pulihkan & Reset Data Lokal</h2>
+      <p class="sub">Seluruh 97 data siswa, 9 data PTK, serta catatan presensi, nilai, dan perangkat ajar tersimpan aman di browser ini. Gunakan fitur Restore untuk memindahkan data ke perangkat lain.</p>
       <div class="actions" style="margin-top:14px">
         <button class="btn primary" onclick="backupJSON()">📥 Unduh Backup Lengkap (.JSON)</button>
+        <label class="btn" style="margin:0;cursor:pointer">📤 Pulihkan dari File (.JSON)<input type="file" accept=".json" style="display:none" onchange="restoreJSON(event)"></label>
         <button class="btn danger" onclick="resetDefault()">🔄 Kembalikan Data Awal Sekolah</button>
       </div>
     </div>
@@ -1376,6 +1463,25 @@ function backupJSON() {
   a.click();
 }
 
+function restoreJSON(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      const data = JSON.parse(ev.target.result);
+      ["students","staff","tp","docs","attendance","grades","journals"].forEach(k => {
+        if (Array.isArray(data[k])) store.set(k, data[k]);
+      });
+      alert("Data cadangan berhasil dipulihkan!");
+      render();
+    } catch {
+      alert("Format file JSON tidak valid.");
+    }
+  };
+  reader.readAsText(file);
+}
+
 function resetDefault() {
   if (!confirm("Kembalikan database ke data awal 97 siswa dan 9 PTK SD Negeri 2 Mootilango?")) return;
   store.set("students", INITIAL_STUDENTS);
@@ -1395,7 +1501,6 @@ function exportCSV(kind) {
   a.download = `${kind}_sdn2_mootilango.csv`;
   a.click();
 }
-
 // ============================================================================
 // 12. ROUTING NAVIGASI
 // ============================================================================

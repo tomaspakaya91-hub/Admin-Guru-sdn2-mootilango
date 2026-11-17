@@ -1,0 +1,1437 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Guru Terpadu | SD Negeri 2 Mootilango</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0f294a;
+  --navy-light:#1a3f6e;
+  --blue:#2563eb;
+  --blue-soft:#eff6ff;
+  --gold:#d97706;
+  --gold-soft:#fef3c7;
+  --bg:#f1f5f9;
+  --surface:#ffffff;
+  --ink:#1e293b;
+  --muted:#64748b;
+  --line:#e2e8f0;
+  --green:#059669;
+  --green-soft:#ecfdf5;
+  --red:#dc2626;
+  --red-soft:#fef2f2;
+  --shadow:0 4px 20px -2px rgba(15,41,74,0.06);
+  --shadow-lg:0 12px 32px -4px rgba(15,41,74,0.12);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font:14px/1.6 'Plus Jakarta Sans',system-ui,-apple-system,sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  -webkit-font-smoothing:antialiased;
+}
+header{
+  height:72px;
+  background:linear-gradient(135deg,var(--navy) 0%,var(--navy-light) 100%);
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 28px;
+  position:sticky;
+  top:0;
+  z-index:20;
+  box-shadow:0 4px 16px rgba(15,41,74,0.15);
+}
+.brand{display:flex;align-items:center;gap:14px}
+.logo{
+  width:44px;height:44px;border-radius:14px;
+  background:linear-gradient(135deg,#3b82f6,#1d4ed8);
+  border:1px solid rgba(255,255,255,0.25);
+  display:grid;place-items:center;font-size:22px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.2);
+}
+.brand strong{display:block;font-size:16px;letter-spacing:.3px;font-weight:800}
+.brand small{color:#cbd5e1;font-size:12px}
+.header-right{display:flex;align-items:center;gap:12px;font-size:12px;color:#e2e8f0}
+.pill-badge{
+  background:rgba(255,255,255,0.14);
+  padding:6px 12px;border-radius:99px;
+  border:1px solid rgba(255,255,255,0.18);
+  font-weight:600;
+}
+.layout{display:grid;grid-template-columns:270px 1fr;min-height:calc(100vh - 72px)}
+aside{
+  background:var(--surface);
+  border-right:1px solid var(--line);
+  padding:16px 14px;
+  position:sticky;top:72px;height:calc(100vh - 72px);
+  overflow-y:auto;
+}
+.nav-label{
+  font-size:10px;font-weight:800;letter-spacing:1.1px;
+  color:#94a3b8;padding:16px 12px 6px;text-transform:uppercase;
+}
+nav button{
+  width:100%;border:0;background:transparent;text-align:left;
+  padding:10px 14px;border-radius:10px;color:#475569;
+  cursor:pointer;font:inherit;font-size:13.5px;font-weight:500;
+  display:flex;gap:11px;align-items:center;margin:2px 0;
+  transition:all .18s ease;
+}
+nav button:hover{background:#f8fafc;color:var(--navy);transform:translateX(2px)}
+nav button.active{
+  background:linear-gradient(90deg,var(--blue-soft),#f8fafc);
+  color:var(--blue);font-weight:700;
+  box-shadow:inset 3px 0 0 var(--blue);
+}
+nav button .ico{font-size:16px;width:20px;text-align:center}
+main{padding:28px 32px;max-width:1440px;width:100%;margin:0 auto}
+.page-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:24px}
+h1{font-size:26px;font-weight:800;margin:0 0 4px;color:var(--navy);letter-spacing:-.4px}
+.sub{color:var(--muted);font-size:13.5px}
+.grid-4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.card{
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:16px;padding:20px;box-shadow:var(--shadow);
+}
+.stat-card{position:relative;overflow:hidden;transition:transform .2s}
+.stat-card:hover{transform:translateY(-2px)}
+.stat-top{display:flex;justify-content:space-between;align-items:center}
+.stat-ico{
+  width:42px;height:42px;border-radius:12px;display:grid;place-items:center;font-size:20px;
+}
+.stat{font-size:30px;font-weight:800;color:var(--navy);margin:10px 0 2px;line-height:1.1}
+.stat-label{color:var(--muted);font-size:12.5px;font-weight:600}
+.section{margin-top:22px}
+.section h2{font-size:17px;font-weight:700;color:var(--navy);margin:0 0 14px;display:flex;align-items:center;gap:8px}
+.actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn{
+  border:1px solid var(--line);background:#fff;color:var(--ink);
+  padding:9px 15px;border-radius:10px;cursor:pointer;
+  font:inherit;font-size:13px;font-weight:600;
+  display:inline-flex;align-items:center;gap:6px;
+  transition:all .15s;
+}
+.btn:hover{background:#f8fafc;border-color:#cbd5e1}
+.btn.primary{background:var(--blue);color:#fff;border-color:var(--blue);box-shadow:0 2px 8px rgba(37,99,235,0.25)}
+.btn.primary:hover{background:#1d4ed8}
+.btn.success{background:var(--green);color:#fff;border-color:var(--green)}
+.btn.danger{color:var(--red);border-color:#fecaca;background:#fff}
+.btn.danger:hover{background:var(--red-soft)}
+.btn.sm{padding:6px 10px;font-size:12px;border-radius:8px}
+table{width:100%;border-collapse:collapse;background:#fff}
+th,td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--line);font-size:13px}
+th{
+  background:#f8fafc;color:#475569;font-size:11px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.5px;white-space:nowrap;
+}
+tr:hover td{background:#f8fafc}
+.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:14px;background:#fff;box-shadow:var(--shadow)}
+input,select,textarea{
+  width:100%;padding:10px 12px;border:1px solid #cbd5e1;border-radius:10px;
+  font:inherit;font-size:13.5px;background:#fff;color:var(--ink);
+  transition:border-color .15s,box-shadow .15s;
+}
+input:focus,select:focus,textarea:focus{
+  outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,0.12);
+}
+label{display:block;font-size:12px;font-weight:700;color:#475569;margin-bottom:6px}
+.field{margin-bottom:14px}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.form-grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.notice{
+  background:linear-gradient(to right,#fffbeb,#fef3c7);
+  border:1px solid #fde68a;padding:14px 16px;border-radius:12px;
+  color:#92400e;font-size:13px;display:flex;gap:10px;align-items:flex-start;
+}
+.empty{text-align:center;padding:42px 20px;color:var(--muted)}
+.menu-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.menu-tile{
+  background:#fff;border:1px solid var(--line);border-radius:14px;
+  padding:18px;cursor:pointer;text-align:left;transition:all .18s;
+  box-shadow:var(--shadow);
+}
+.menu-tile:hover{border-color:#93c5fd;transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.menu-tile .tile-ico{font-size:24px;margin-bottom:8px;display:inline-block}
+.menu-tile b{display:block;font-size:14.5px;color:var(--navy);margin-bottom:4px}
+.menu-tile small{color:var(--muted);font-size:12.5px;line-height:1.4;display:block}
+.tag{
+  display:inline-flex;align-items:center;padding:3px 10px;border-radius:99px;
+  font-size:11px;font-weight:700;
+}
+.tag.blue{background:var(--blue-soft);color:var(--blue)}
+.tag.green{background:var(--green-soft);color:var(--green)}
+.tag.gold{background:var(--gold-soft);color:var(--gold)}
+.tag.red{background:var(--red-soft);color:var(--red)}
+.tag.gray{background:#f1f5f9;color:#475569}
+
+/* Bar chart visual */
+.bar-row{display:flex;align-items:center;gap:12px;margin:10px 0}
+.bar-label{width:70px;font-weight:700;font-size:12.5px;color:var(--navy)}
+.bar-track{flex:1;height:12px;background:#e2e8f0;border-radius:99px;overflow:hidden}
+.bar-fill{height:100%;background:linear-gradient(90deg,var(--blue),#38bdf8);border-radius:99px}
+.bar-val{width:65px;text-align:right;font-size:12.5px;font-weight:700;color:var(--muted)}
+
+/* CP Card */
+.cp-box{
+  border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:12px;background:#f8fafc;
+}
+.cp-box h4{margin:0 0 6px;color:var(--navy);font-size:14px}
+.cp-box p{margin:0;font-size:13px;color:#334155;line-height:1.6}
+
+/* Modal */
+.modal{
+  position:fixed;inset:0;background:rgba(15,23,42,0.55);backdrop-filter:blur(3px);
+  display:none;align-items:center;justify-content:center;padding:20px;z-index:50;
+}
+.modal.show{display:flex}
+.modal-box{
+  background:#fff;border-radius:18px;padding:24px;width:min(680px,100%);
+  max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg);
+}
+.modal-head{
+  display:flex;justify-content:space-between;align-items:center;
+  padding-bottom:14px;margin-bottom:18px;border-bottom:1px solid var(--line);
+}
+.modal-head h2{margin:0;font-size:18px;color:var(--navy)}
+
+/* Tabs */
+.tabs{display:flex;gap:8px;border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:18px;flex-wrap:wrap}
+.tab-btn{
+  padding:8px 14px;border-radius:9px;border:1px solid var(--line);
+  background:#fff;color:var(--muted);font-weight:600;font-size:13px;cursor:pointer;
+}
+.tab-btn.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+
+@media(max-width:960px){
+  .layout{grid-template-columns:1fr}
+  aside{position:relative;top:0;height:auto;padding:10px;border-right:0;border-bottom:1px solid var(--line)}
+  nav{display:flex;overflow-x:auto;gap:4px}
+  nav button{white-space:nowrap;width:auto}
+  .nav-label{display:none}
+  main{padding:20px}
+  .grid-4{grid-template-columns:repeat(2,1fr)}
+  .grid-2{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+  header{padding:0 16px}
+  .header-right{display:none}
+  .menu-grid,.form-grid,.form-grid-3{grid-template-columns:1fr}
+  .page-head{flex-direction:column}
+}
+@media print{
+  header,aside,.actions,.btn,.no-print{display:none!important}
+  .layout{display:block}
+  main{padding:0;max-width:100%}
+  .card,.table-wrap{box-shadow:none;border:1px solid #ccc}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <div class="logo">📘</div>
+    <div>
+      <strong>ADMIN GURU TERPADU</strong>
+      <small>SD Negeri 2 Mootilango • NPSN 40500670</small>
+    </div>
+  </div>
+  <div class="header-right">
+    <span class="pill-badge">📅 TP 2026/2027</span>
+    <span class="pill-badge">📚 CP BSKAP 046/2025</span>
+  </div>
+</header>
+
+<div class="layout">
+  <aside>
+    <div class="nav-label">Ringkasan & Data Master</div>
+    <nav id="nav">
+      <button class="active" data-page="dashboard"><span class="ico">📊</span> Dashboard Utama</button>
+      <button data-page="students"><span class="ico">👥</span> Data Peserta Didik (97)</button>
+      <button data-page="staff"><span class="ico">👔</span> Data PTK & Wali Kelas (9)</button>
+
+      <div class="nav-label">Perangkat Kurikulum 2025</div>
+      <button data-page="curriculum"><span class="ico">🎯</span> CP, TP & ATP (2025)</button>
+      <button data-page="planning"><span class="ico">📅</span> Prota, Promes & Silabus</button>
+      <button data-page="module"><span class="ico">📖</span> Modul Ajar / RPP</button>
+      <button data-page="lkpd"><span class="ico">📝</span> LKPD</button>
+
+      <div class="nav-label">Asesmen & Pelaksanaan</div>
+      <button data-page="attendance"><span class="ico">✅</span> Presensi Harian</button>
+      <button data-page="grades"><span class="ico">📈</span> Daftar Nilai & Rapor</button>
+      <button data-page="journal"><span class="ico">✍️</span> Jurnal Mengajar</button>
+      <button data-page="questions"><span class="ico">🗂️</span> Bank Soal & Asesmen</button>
+
+      <div class="nav-label">Supervisi & Utilitas</div>
+      <button data-page="supervision"><span class="ico">📋</span> Paket Siap Supervisi</button>
+      <button data-page="templates"><span class="ico">🖨️</span> Template Administrasi</button>
+      <button data-page="settings"><span class="ico">⚙️</span> Pengaturan & Backup</button>
+    </nav>
+  </aside>
+
+  <main id="content"></main>
+</div>
+
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h2 id="modalTitle">Formulir</h2>
+      <button class="btn sm" onclick="closeModal()">✕ Tutup</button>
+    </div>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+// ============================================================================
+// 1. DATA MASTER SEKOLAH, PTK (SEPTEMBER 2026), & PESERTA DIDIK (97 SISWA)
+// ============================================================================
+const SCHOOL = {
+  name: "SD Negeri 2 Mootilango",
+  npsn: "40500670",
+  address: "Desa Helumo, Kecamatan Mootilango, Kabupaten Gorontalo, Provinsi Gorontalo",
+  motto: "Berprestasi, Berkarakter, Berbudaya",
+  headmaster: "TOMAS PAKAYA, S.Pd",
+  headmasterNip: "19850109 201001 1 003",
+  academicYear: "2026/2027"
+};
+
+const INITIAL_STAFF = [
+  {id:1, name:"TOMAS PAKAYA, S.Pd", nip:"19850109 201001 1 003", ttl:"Paguyaman, 09-01-1985", jk:"L", role:"Kepala Sekolah", gol:"III/d", status:"PNS", ijazah:"S2 PPKN / 2024", tmtSekolah:"20/03/2024", mapel:"—", jp:"—", masaKerja:"16 th 6 bln", alamat:"Desa Boliyohuto"},
+  {id:2, name:"SUSI TRISNAWATI, S.Pd", nip:"19880120 201201 2 001", ttl:"Ngawi, 20-01-1988", jk:"P", role:"Guru Kelas VI", gol:"III/b", status:"PNS", ijazah:"S1 PGSD / 2014", tmtSekolah:"18/01/2021", mapel:"Guru Kelas", jp:"24 JP", masaKerja:"5 th 3 bln", alamat:"Desa Helumo"},
+  {id:3, name:"FIQIH TOYITI, S.Pd", nip:"19910816 201201 2 006", ttl:"Gorontalo Utara, 16-08-1991", jk:"P", role:"Guru Kelas I", gol:"III/b", status:"PNS", ijazah:"S1 PGSD / 2018", tmtSekolah:"18/01/2021", mapel:"Guru Kelas", jp:"24 JP", masaKerja:"5 th 3 bln", alamat:"Desa Bualo"},
+  {id:4, name:"ROHANI K. MAIDJI, S.Pd", nip:"19950828 202221 2 013", ttl:"Gorontalo, 28-08-1995", jk:"P", role:"Guru Kelas IV", gol:"IX", status:"PPPK", ijazah:"S1 PGSD", tmtSekolah:"06/01/2019", mapel:"Guru Kelas", jp:"24 JP", masaKerja:"7 th 2 bln", alamat:"Desa Helumo"},
+  {id:5, name:"NURJANA K MAIDJI, A.Ma", nip:"—", ttl:"Paguyaman, 12-11-1983", jk:"P", role:"Guru Kelas III", gol:"—", status:"GTT", ijazah:"D II GPAI / 2005", tmtSekolah:"01/07/2015", mapel:"Guru Kelas", jp:"24 JP", masaKerja:"10 th 9 bln", alamat:"Desa Helumo"},
+  {id:6, name:"NONA MELIYAWATI H. KAI, S.Pd", nip:"19901003 202521 2 126", ttl:"Tilawa, 13-10-1990", jk:"P", role:"Guru Kelas II", gol:"—", status:"PPPK", ijazah:"S1 PGSD / 2013", tmtSekolah:"05/07/2018", mapel:"Guru Kelas", jp:"24 JP", masaKerja:"7 th 9 bln", alamat:"Desa Satria"},
+  {id:7, name:"LENI ABDULRAHMAN, S.Pd.I", nip:"19880619 202521 2 098", ttl:"Boliyohuto, 19-06-1988", jk:"P", role:"Guru PAI", gol:"—", status:"PPPK", ijazah:"S1 PAI / 2013", tmtSekolah:"03/04/2017", mapel:"PAI & Budi Pekerti", jp:"24 JP", masaKerja:"9 th 2 bln", alamat:"Desa Satria"},
+  {id:8, name:"DESRIYANTI RAHMAN, S.Pd", nip:"19981220 202521 2 091", ttl:"Gorontalo, 20-12-1993", jk:"P", role:"Guru Kelas V", gol:"—", status:"PPPK", ijazah:"S1 PGSD / 2022", tmtSekolah:"02/02/2022", mapel:"Guru Kelas", jp:"24 JP", masaKerja:"4 th 2 bln", alamat:"Desa Helumo"},
+  {id:9, name:"MARYAM DAI, A.Md.Kom", nip:"19971228 202521 2 109", ttl:"Boliyohuto, 28-12-1997", jk:"P", role:"Tenaga Kependidikan", gol:"—", status:"PPPK", ijazah:"D3 / 2019", tmtSekolah:"01/09/2020", mapel:"Administrasi / Operator", jp:"—", masaKerja:"6 th 2 bln", alamat:"Desa Helumo"}
+];
+
+const INITIAL_STUDENTS = [{"id":1,"name":"ABDUL AZRAN SULEMAN HUSAIN","nipd":"","gender":"L","nisn":"3181328051","tempatLahir":"Gorontalo","tanggalLahir":"2018-07-22","nik":"7501022207180002","agama":"Islam","alamat":"Hj. Salim Manumba","kelurahan":"Desa/Kel. Helumo","classroom":"1","ayah":"Muchlis Husain","ibu":"Ingka Musa","hp":"","layakPIP":"Tidak","sekolahAsal":"TK Negeri Nusa Indah Kec. Mootilango"},{"id":2,"name":"ABDUL LATIF APRILIO UMAR PAKAYA","nipd":"L.019","gender":"L","nisn":"3165588063","tempatLahir":"GORONTALO","tanggalLahir":"2018-04-24","nik":"7501032404180001","agama":"Islam","alamat":"DESA HELUMO","kelurahan":"Desa/Kel. Helumo","classroom":"3","ayah":"UMAR PAKAYA","ibu":"SRIYOLANDA TAIB","hp":"082194659065","layakPIP":"Ya","sekolahAsal":"NUSA INDAH"},{"id":3,"name":"ABIZARD ABQARY ARJUN","nipd":"","gender":"L","nisn":"3195720878","tempatLahir":"Gorontalo","tanggalLahir":"2019-07-23","nik":"7501142307190001","agama":"Islam","alamat":"Hj. Salim Manumba","kelurahan":"Desa/Kel. Helumo","classroom":"1","ayah":"Zulkifli Arjun","ibu":"Fatmawati Didipu","hp":"","layakPIP":"Tidak","sekolahAsal":"TK Negeri Nusa Indah Kec. Mootilango"},{"id":4,"name":"ADIBA SHAKILA YASIN","nipd":"K.085","gender":"P","nisn":"0146720764","tempatLahir":"GORONTALO","tanggalLahir":"2015-07-25","nik":"7501146507150002","agama":"Islam","alamat":"JL. Hj. Salim Manumba","kelurahan":"HELUMO","classroom":"5","ayah":"NOLVI U. YASIN","ibu":"PRATIWI SIDIKI","hp":"","layakPIP":"Tidak","sekolahAsal":"NUSA INDAH"},{"id":5,"name":"AFANIN NAFISAH BADE","nipd":"L.020","gender":"P","nisn":"3180730819","tempatLahir":"GORONTALO","tanggalLahir":"2018-03-10","nik":"7501145003180001","agama":"Islam","alamat":"DESA HELUMO","kelurahan":"Desa/Kel. Paris","classroom":"3","ayah":"ANTON BADE","ibu":"ELVINA RAHMAN","hp":"","layakPIP":"Ya","sekolahAsal":"TK NEGERI PEMBINA KECAMATAN MOOTILANGO 1"},{"id":6,"name":"AFNAN RAMADHAN BASIRUN","nipd":"","gender":"L","nisn":"3180267574","tempatLahir":"LIMBOTO","tanggalLahir":"2019-05-10","nik":"7505111005190001","agama":"Islam","alamat":"BULADU","kelurahan":"BULADU","classroom":"2","ayah":"Ilham Basirun","ibu":"fiqih toyiti","hp":"082217467809","layakPIP":"Tidak","sekolahAsal":"KB KUNTUM MEKAR"},{"id":7,"name":"AHMAD AL HAFIZ PANGERAN","nipd":"","gender":"L","nisn":"3190065825","tempatLahir":"GORONTALO","tanggalLahir":"2019-08-11","nik":"7501141108190001","agama":"Islam","alamat":"JL. Hi. Salim Manumba","kelurahan":"Desa/Kel. Paris","classroom":"1","ayah":"SAIFUL PANGERAN","ibu":"NIKMA TOMELO","hp":"","layakPIP":"Tidak","sekolahAsal":"TK NEGERI PEMBINA KECAMATAN MOOTILANGO 1"},{"id":8,"name":"AHMAT POLINGALA","nipd":"K.091","gender":"L","nisn":"0139533538","tempatLahir":"GORONTALO","tanggalLahir":"2015-08-06","nik":"7501140608150001","agama":"Islam","alamat":"Jl. Hj. Salim Manumba","kelurahan":"Desa/Kel. Helumo","classroom":"4","ayah":"Yasin N. Polingala","ibu":"Asna Lasoma","hp":"","layakPIP":"Tidak","sekolahAsal":"NUSA INDAH"},{"id":9,"name":"AIYRA SALSABILA UMAR","nipd":"L.003","gender":"P","nisn":"3168542843","tempatLahir":"GORONTALO","tanggalLahir":"2016-08-29","nik":"7501146908160001","agama":"Islam","alamat":"JL. Hi. Salim Manumba","kelurahan":"Desa/Kel. Helumo","classroom":"4","ayah":"YUSUF UMAR","ibu":"ENDANG MULYANI","hp":"","layakPIP":"Tidak","sekolahAsal":"NUSA INDAH"},{"id":10,"name":"AKBAR PAHAR ALIHI","nipd":"L.005","gender":"L","nisn":"3166318862","tempatLahir":"GORONTALO","tanggalLahir":"2016-06-08","nik":"7501140806160001","agama":"Islam","alamat":"JL. BULIA","kelurahan":"Desa/Kel. Paris","classroom":"4","ayah":"PAHAR T. ALIHI","ibu":"RIYANTI KASIM","hp":"","layakPIP":"Ya","sekolahAsal":"CENDANA II"},{"id":11,"name":"AKBAR SAPUTRA HUSAIN","nipd":"L.027","gender":"L","nisn":"3175024127","tempatLahir":"Gorontalo","tanggalLahir":"2017-03-29","nik":"7501142903170002","agama":"Islam","alamat":"Dusun Bendungan","kelurahan":"Desa/Kel. Helumo","classroom":"4","ayah":"ADNAN HUSAIN","ibu":"Erpin Pongoliu","hp":"082196838469","layakPIP":"Tidak","sekolahAsal":""},{"id":12,"name":"AKBAR SAPUTRA MAHMUD","nipd":"","gender":"L","nisn":"3192306792","tempatLahir":"Gorontalo","tanggalLahir":"2019-08-11","nik":"7501141108190003","agama":"Islam","alamat":"Hj. Salim Manumba","kelurahan":"Desa/Kel. Helumo","classroom":"1","ayah":"Kasmad Mahmud","ibu":"Susanti Mohamad","hp":"","layakPIP":"Tidak","sekolahAsal":"TK Negeri Nusa Indah Kec. Mootilango"},{"id":13,"name":"AL HABIB DAUD","nipd":"L.021","gender":"L","nisn":"3187140742","tempatLahir":"GORONTALO","tanggalLahir":"2018-06-13","nik":"7501141306180001","agama":"Islam","alamat":"HJ.SALIM MANUMBA","kelurahan":"Desa/Kel. Helumo","classroom":"3","ayah":"ABDUL KADIR DAUD","ibu":"SALMA HAMZAH","hp":"083117927914","layakPIP":"Ya","sekolahAsal":"NUSA INDAH"},{"id":14,"name":"ALESHA ZAHRA ADAM","nipd":"","gender":"P","nisn":"3187695587","tempatLahir":"Gorontalo","tanggalLahir":"2018-07-22","nik":"7501146207180001","agama":"Islam","alamat":"Hj. Salim Manumba","kelurahan":"Desa/Kel. Helumo","classroom":"2","ayah":"Roni Adam","ibu":"Rian Herman Mahmud","hp":"","layakPIP":"Tidak","sekolahAsal":"TK Negeri Nusa Indah Kec. Mootilango"},{"id":15,"name":"ALIF IBRAHIM","nipd":"K.045","gender":"L","nisn":"0147151834","tempatLahir":"GORONTALO","tanggalLahir":"2014-05-23","nik":"7501142305140001","agama":"Islam","alamat":"JL. BULIA","kelurahan":"PARIS","classroom":"5","ayah":"UNE IBRAHIM","ibu":"SANTI ARSAD","hp":"085242506144","layakPIP":"Ya","sekolahAsal":""},{"id":16,"name":"ALIFA ASQADINA SULAEMAN","nipd":"L.031","gender":"P","nisn":"3175110394","tempatLahir":"KABUPATEN POHUWATO","tanggalLahir":"2017-08-11","nik":"7504105108170001","agama":"Islam","alamat":"UPT DESA MEKAR JAYA","kelurahan":"Desa/Kel. Mekar Jaya","classroom":"3","ayah":"HAZMA SULAEMAN","ibu":"SELVIYANTI DAUD","hp":"","layakPIP":"Tidak","sekolahAsal":""},{"id":17,"name":"ALLMAN SYHAPUTRA HAYUN","nipd":"K.062","gender":"L","nisn":"0153730156","tempatLahir":"GORONTALO","tanggalLahir":"2015-04-16","nik":"7501141604150001","agama":"Islam","alamat":"Jl. Hj. Salim Manumba","kelurahan":"Helumo","classroom":"6","ayah":"Romo Hayun","ibu":"Rina Mointi","hp":"082259878388","layakPIP":"Ya","sekolahAsal":""},{"id":18,"name":"ANANDA PUTRI AGA","nipd":"L.011","gender":"P","nisn":"3167580497","tempatLahir":"GORONTALO","tanggalLahir":"2016-07-12","nik":"7501045207160001","agama":"Islam","alamat":"Jl. Hi. Salim Manumba","kelurahan":"Desa/Kel. Helumo","classroom":"3","ayah":"AGUS AGA","ibu":"NIKMA Y. DJOLE","hp":"","layakPIP":"Tidak","sekolahAsal":"NUSA INDAH"},{"id":19,"name":"APRILIA A. MAHMUD","nipd":"K.063","gender":"P","nisn":"0147297084","tempatLahir":"KABUPATEN GORONTALO","tanggalLahir":"2014-07-27","nik":"7501146707140001","agama":"Islam","alamat":"Jln. Hj. Salim Manumba","kelurahan":"Helumo","classroom":"6","ayah":"Abdul Azis Mahmud","ibu":"Lian Bakari","hp":"082196838478","layakPIP":"Ya","sekolahAsal":""},{"id":20,"name":"APRILIA LASOMA","nipd":"K.099","gender":"P","nisn":"3163705980","tempatLahir":"GORONTALO","tanggalLahir":"2016-04-15","nik":"7501145504160001","agama":"Islam","alamat":"Jl. Hi. Salim Manumba","kelurahan":"HELUMO","classroom":"4","ayah":"RIDWAN LASOMA","ibu":"LILAN BULOTO","hp":"082292097589","layakPIP":"Tidak","sekolahAsal":"NUSA INDAH"},{"id":21,"name":"Aqeela Keyzia RoeRoe","nipd":"L.012","gender":"P","nisn":"3166084963","tempatLahir":"Gorontalo","tanggalLahir":"2016-01-27","nik":"7501146701160002","agama":"Islam","alamat":"Nani Hasan","kelurahan":"Upomela","classroom":"5","ayah":"","ibu":"Nurhayati S. Pakaya","hp":"","layakPIP":"Ya","sekolahAsal":"SDN 3 BONGOMEME"},{"id":22,"name":"AQILA PUTRI ISA","nipd":"L.028","gender":"P","nisn":"3189624823","tempatLahir":"Gorontalo","tanggalLahir":"2018-02-14","nik":"7501145402180001","agama":"Islam","alamat":"Dusun Bulila Desa Paris","kelurahan":"Desa/Kel. Paris","classroom":"3","ayah":"IRPAN ISA","ibu":"Safitri Mahmud","hp":"","layakPIP":"Ya","sekolahAsal":""},{"id":23,"name":"AQILLA KHUMAIRAH BADE","nipd":"K.097","gender":"P","nisn":"0159037882","tempatLahir":"GORONTALO","tanggalLahir":"2015-12-01","nik":"7501144112150001","agama":"Islam","alamat":"JL. BULIA","kelurahan":"PARIS","classroom":"5","ayah":"ANTO BADE","ibu":"ELVINA RAHMAN","hp":"","layakPIP":"Tidak","sekolahAsal":""},{"id":24,"name":"AQILLA NURFATINIA TOMELO","nipd":"K.064","gender":"P","nisn":"0153536518","tempatLahir":"GORONTALO","tanggalLahir":"2015-06-05","nik":"7501144506150001","agama":"Islam","alamat":"Jl. Bendungan","kelurahan":"HELUMO","classroom":"6","ayah":"HAMDAN TOMELO","ibu":"SAHRIN PAKAYA","hp":"082259451776","layakPIP":"Ya","sekolahAsal":""},{"id":25,"name":"ARLAN POLINGALA","nipd":"","gender":"L","nisn":"3183581909","tempatLahir":"Gorontalo","tanggalLahir":"2018-12-23","nik":"7501142312180001","agama":"Islam","alamat":"Hj.Salim Manumba","kelurahan":"Desa/Kel. Helumo","classroom":"2","ayah":"Anwar Polingala","ibu":"Meilan Musa Aga","hp":"","layakPIP":"Tidak","sekolahAsal":"TK Negeri Nusa Indah Kec. Mootilango"},{"id":26,"name":"ARSILA YUSUF UMAR","nipd":"","gender":"P","nisn":"3195626680","tempatLahir":"Gorontalo","tanggalLahir":"2019-02-20","nik":"7501146002190001","agama":"Islam","alamat":"Hj.Salim Manumba","kelurahan":"Desa/Kel. Helumo","classroom":"2","ayah":"Yusuf Umar","ibu":"Endang Mulyani","hp":"","layakPIP":"Tidak","sekolahAsal":"TK Negeri Nusa Indah Kec. Mootilango"},{"id":27,"name":"ARSYAHN DENI SYAHPUTRA","nipd":"L.014","gender":"L","nisn":"3169343281","tempatLahir":"GORONTALO","tanggalLahir":"2016-04-19","nik":"7501141904160002","agama":"Islam","alamat":"JL. Hj. Salim Manumba","kelurahan":"HELUMO","classroom":"5","ayah":"DENI SYAHPUTRA","ibu":"FERAWATY UMAR","hp":"082196370404","layakPIP":"Ya","sekolahAsal":""},{"id":28,"name":"ASSYIFAH NAILAH TAIB","nipd":"K.065","gender":"P","nisn":"0154845483","tempatLahir":"GORONTALO","tanggalLahir":"2015-04-13","nik":"7501145304150001","agama":"Islam","alamat":"Jl. Hj. Salim Manumba","kelurahan":"Helumo","classroom":"6","ayah":"Aten Taib","ibu":"Yowan Hasan","hp":"085282049162","layakPIP":"Ya","sekolahAsal":""},{"id":29,"name":"AULIA SAPUTRI PAKAYA","nipd":"","gender":"P","nisn":"3190736723","tempatLahir":"GORONTALO","tanggalLahir":"2019-11-08","nik":"7501144811190002","agama":"Islam","alamat":"L. Hi. Salim Manumba","kelurahan":"Desa/Kel. Paris","classroom":"1","ayah":"AHMAD PAKAYA","ibu":"LASMIN LAKUJU","hp":"","layakPIP":"Tidak","sekolahAsal":"TK NEGERI PEMBINA KECAMATAN MOOTILANGO 1"},{"id":30,"name":"AUREL PAKAYA","nipd":"K.096","gender":"P","nisn":"3143828541","tempatLahir":"BOTUMOITO","tanggalLahir":"2014-08-09","nik":"7502024908140003","agama":"Islam","alamat":"Dusun Bulia","kelurahan":"Paris","classroom":"5","ayah":"Ahmad Pakaya","ibu":"Lasmin Lakuju","hp":"082271273397","layakPIP":"Ya","sekolahAsal":""},{"id":31,"name":"AYU LESTARI M. AHMAD","nipd":"K.066","gender":"P","nisn":"0145702042","tempatLahir":"KABUPATEN GORONTALO","tanggalLahir":"2014-08-08","nik":"7501144808140001","agama":"Islam","alamat":"JL. Hj. Salim Manumba","kelurahan":"HELUMO","classroom":"6","ayah":"MARHAB AHMAD","ibu":"SRIYATI MELANGI","hp":"085343788818","layakPIP":"Ya","sekolahAsal":""},{"id":32,"name":"AZWAR BIU","nipd":"","gender":"L","nisn":"3193744275","tempatLahir":"Gorontalo","tanggalLahir":"2019-11-04","nik":"7501140411190001","agama":"Islam","alamat":"Hj. Salim Manumba","kelurahan":"Desa/Kel. Helumo","classroom":"1","ayah":"Ramli Biu","ibu":"Risna T. Abdul","hp":"","layakPIP":"Tidak","sekolahAsal":"TK Negeri Nusa Indah Kec. Mootilango"},{"id":33,"name":"BILQIS HAYRUMNISA LIHAWA","nipd":"K.067","gender":"P","nisn":"0145920710","tempatLahir":"Gorontalo","tanggalLahir":"2014-09-19","nik":"7501145909140001","agama":"Islam","alamat":"Hj. Salim Manumba","kelurahan":"Helumo","classroom":"6","ayah":"Yanto Lihawa","ibu":"Hawarianti A. Buheli","hp":"081242414890","layakPIP":"Ya","sekolahAsal":""},{"id":34,"name":"FARAH NISASIBYAN TOMELO","nipd":"","gender":"P","nisn":"3185383011","tempatLahir":"Gorontalo","tanggalLahir":"2018-09-24","nik":"7501146409180002","agama":"Islam","alamat":"Hj. Salim Manumba","kelurahan":"Desa/Kel. Helumo","classroom":"2","ayah":"MUHIBA TOMELO","ibu":"MEYSKE ADRIANI PAKAYA","hp":"","layakPIP":"Tidak","sekolahAsal":"TK Negeri Nusa Indah Kec. Mootilango"},{"id":35,"name":"Farhan","nipd":"L.029","gender":"L","nisn":"3145981741","tempatLahir":"Kab. Pohuwato","tanggalLahir":"2014-10-28","nik":"7504042810140002","agama":"Islam","alamat":"0","kelurahan":"Botubilotahu","classroom":"6","ayah":"","ibu":"Kartin Yusup","hp":"","layakPIP":"Tidak","sekolahAsal":""},{"id":36,"name":"FATHAN RAYYAN GUE","nipd":"","gender":"L","nisn":"3207881960","tempatLahir":"GORONTALO","tanggalLahir":"2020-06-04","nik":"7501140406200001","agama":"Islam","alamat":"JL. ANGGREK","kelurahan":"Desa/Kel. Huyula","classroom":"1","ayah":"APRIYANTO GUE","ibu":"CINDRAWATI R. DEKO","hp":"","layakPIP":"Tidak","sekolahAsal":"KEMBANG ASRI"},{"id":37,"name":"FATMA MUSTAFA","nipd":"K.068","gender":"P","nisn":"0146483512","tempatLahir":"KABUPATEN GORONTALO","tanggalLahir":"2014-11-24","nik":"7501146411140001","agama":"Islam","alamat":"Jln. Hj. Salim Manumba","kelurahan":"Helumo","classroom":"6","ayah":"Arfan Mustafa","ibu":"Lena Yasin","hp":"085345041105","layakPIP":"Ya","sekolahAsal":""},{"id":38,"name":"FAZRIL DJIBU","nipd":"","gender":"L","nisn":"3198142435","tempatLahir":"Gorontalo","tanggalLahir":"2019-09-19","nik":"7501141909190001","agama":"Islam","alamat":"Hj. Salim manumba","kelurahan":"Desa/Kel. Helumo","classroom":"1","ayah":"","ibu":"Nurhayati Kidam","hp":"","layakPIP":"Tidak","sekolahAsal":"TK Negeri Nusa Indah Kec. Mootilango"},{"id":39,"name":"FIRMANSYA NOIYO","nipd":"K.098","gender":"L","nisn":"3157296143","tempatLahir":"GORONTALO","tanggalLahir":"2015-11-04","nik":"7501140411150002","agama":"Islam","alamat":"JL. BENDUNGAN","kelurahan":"PARIS","classroom":"4","ayah":"ISMAIL NOIYO","ibu":"FATMA HASAN","hp":"082293687825","layakPIP":"Tidak","sekolahAsal":""},{"id":40,"name":"HAFIZ NURKHOLID BULOTO","nipd":"","gender":"L","nisn":"3190104168","tempatLahir":"Gorontalo","tanggalLahir":"2019-06-14","nik":"7501141406190001","agama":"Islam","alamat":"Hj. Salim Manumba","kelurahan":"Desa/Kel. Helumo","classroom":"2","ayah":"","ibu":"MISRAN MAKRUF","hp":"","layakPIP":"Tidak","sekolahAsal":"TK Negeri Nusa Indah Kec. Mootilango"},{"id":41,"name":"HAIDAR ADIB MOHAMMAD","nipd":"L.016","gender":"L","nisn":"3187548099","tempatLahir":"Gorontalo","tanggalLahir":"2018-04-12","nik":"7172071204180001","agama":"Islam","alamat":"Hj. Salim Manumba","kelurahan":"Desa/Kel. Helumo","classroom":"2","ayah":"Irsan Mohamad","ibu":"Fatria Umar","hp":"081283872986","layakPIP":"Ya","sekolahAsal":"NUSA INDAH"},{"id":42,"name":"ISMANSYAH PUTRA TOMUTU","nipd":"L.022","gender":"L","nisn":"3183601476","tempatLahir":"GORONTALO","tanggalLahir":"2018-01-12","nik":"7501141201180002","agama":"Islam","alamat":"Jln. Bendungan","kelurahan":"Desa/Kel. Helumo","classroom":"3","ayah":"SAHRUL ADI SAPUTRA TOMUTU","ibu":"NURJANA.K.MAIDJI","hp":"082193660473","layakPIP":"Ya","sekolahAsal":"NUSA INDAH"},{"id":43,"name":"Khaira Oktavia Umar Pakaya","nipd":"K.075","gender":"P","nisn":"3140137674","tempatLahir":"Gorontalo","tanggalLahir":"2014-10-10","nik":"7501035010140002","agama":"Islam","alamat":"Dusun Benhil","kelurahan":"Helumo","classroom":"6","ayah":"","ibu":"Sriyolanda Taib","hp":"087815234987","layakPIP":"Ya","sekolahAsal":""},{"id":44,"name":"KIRANA PUTRI AGA","nipd":"L.001","gender":"P","nisn":"3151708116","tempatLahir":"GORONTALO","tanggalLahir":"2015-07-05","nik":"7501044507150002","agama":"Islam","alamat":"JL. Hj. Salim Manumba","kelurahan":"HELUMO","classroom":"3","ayah":"AGUS AGA","ibu":"NIKMA Y. DJOLE","hp":"085342802990","layakPIP":"Tidak","sekolahAsal":"NUSA INDAH"},{"id":45,"name":"MAHFIDZUL ADAM","nipd":"K.060","gender":"L","nisn":"0146041951","tempatLahir":"KABUPATEN GORONTALO","tanggalLahir":"2014-07-29","nik":"7501142907140001","agama":"Islam","alamat":"Bendungan","kelurahan":"Paris","classroom":"6","ayah":"David Imran Adam","ibu":"Zubaida Y. Abdullah","hp":"082393106911","layakPIP":"Ya","sekolahAsal":""},{"id":46,"name":"MARCEL HAKIM","nipd":"","gender":"L","nisn":"3187561973","tempatLahir":"BOALEMO","tanggalLahir":"2018-09-24","nik":"7502012409180001","agama":"Islam","alamat":"BONGO TUA","kelurahan":"Bongo Tua","classroom":"2","ayah":"HASAN HAKIM","ibu":"ASTIN IBRAHIM","hp":"085123973912","layakPIP":"Ya","sekolahAsal":""},{"id":47,"name":"MARSEL BULOTO","nipd":"","gender":"L","nisn":"3183954098","tempatLahir":"Gorontalo","tanggalLahir":"2018-10-30","nik":"7501143010180001","agama":"Islam","alamat":"Hj. Salim Manumba","kelurahan":"Desa/Kel. Helumo","classroom":"1","ayah":"Ishak Buloto","ibu":"Aisa Rauf","hp":"","layakPIP":"Tidak","sekolahAsal":"TK Negeri Nusa Indah Kec. Mootilango"},{"id":48,"name":"MARZIA GUFRANA ABDULLAH","nipd":"","gender":"P","nisn":"3193479177","tempatLahir":"Gorontalo","tanggalLahir":"2019-09-14","nik":"7501145409190001","agama":"Islam","alamat":"Hj. Salim Manumba","kelurahan":"Desa/Kel. Helumo","classroom":"1","ayah":"Adam Abdullah","ibu":"Wiwin Biu","hp":"","layakPIP":"Tidak","sekolahAsal":"TK Negeri Nusa Indah Kec. Mootilango"},{"id":49,"name":"MOHAMAD ADITYA AMIR","nipd":"K.089","gender":"L","nisn":"3167621559","tempatLahir":"GORONTALO","tanggalLahir":"2016-02-29","nik":"7501142902160001","agama":"Islam","alamat":"JL. Hj. Salim Manumba","kelurahan":"HELUMO","classroom":"5","ayah":"AHMAD AMIR","ibu":"DJURIATI DJAFAR","hp":"082252845822","layakPIP":"Ya","sekolahAsal":"NUSA INDAH"},{"id":50,"name":"MOHAMAD ATTALAH TOU","nipd":"L.008","gender":"L","nisn":"3171226383","tempatLahir":"GORONTALO","tanggalLahir":"2017-01-19","nik":"7501141901170001","agama":"Islam","alamat":"HJ.SALIM MANUMBA","kelurahan":"Desa/Kel. Helumo","classroom":"4","ayah":"SULEMAN TOU","ibu":"MUN PAKAYA","hp":"082194351775","layakPIP":"Tidak","sekolahAsal":"NUSA INDAH"},{"id":51,"name":"MOHAMAD BILAL MAJID","nipd":"L.032","gender":"L","nisn":"0152278601","tempatLahir":"KABUPATEN POHUWATO","tanggalLahir":"2015-06-03","nik":"7504100306150001","agama":"Islam","alamat":"TRANS UPT","kelurahan":"MEKAR JAYA","classroom":"6","ayah":"FARLIN MAJID","ibu":"SELVIYANTI DAUD","hp":"","layakPIP":"Tidak","sekolahAsal":""},{"id":52,"name":"MOHAMAD FADLI MUSTAPA","nipd":"K.094","gender":"L","nisn":"3158155922","tempatLahir":"GORONTALO","tanggalLahir":"2015-12-27","nik":"7501142712150002","agama":"Islam","alamat":"JL. Hj. Salim Manumba","kelurahan":"HELUMO","classroom":"5","ayah":"WEM MUSTAPA","ibu":"EMILIA DAI","hp":"081240236547","layakPIP":"Tidak","sekolahAsal":"NUSA INDAH"},{"id":53,"name":"MOHAMAD FATHAN MOINTI","nipd":"K.078","gender":"L","nisn":"3156869296","tempatLahir":"GORONTALO","tanggalLahir":"2015-06-03","nik":"7501140306150003","agama":"Islam","alamat":"JLn.Bendungan","kelurahan":"Helumo","classroom":"6","ayah":"SAMSUDIN MOINTI","ibu":"SATRIANI NABU","hp":"081241112235","layakPIP":"Ya","sekolahAsal":""},{"id":54,"name":"MOHAMAD RAFFASYA AMIR","nipd":"L.023","gender":"L","nisn":"3170180979","tempatLahir":"GORONTALO","tanggalLahir":"2017-10-26","nik":"7501142610170001","agama":"Islam","alamat":"Jln. Bendungan","kelurahan":"Desa/Kel. Helumo","classroom":"3","ayah":"MANSUR AMIR","ibu":"SAMRAN MOINTI","hp":"","layakPIP":"Ya","sekolahAsal":"NUSA INDAH"},{"id":55,"name":"MOHAMAD RAFFASYA MAHMUD","nipd":"L.018","gender":"L","nisn":"3179669259","tempatLahir":"KOTA GORONTALO","tanggalLahir":"2017-06-24","nik":"7501142406170001","agama":"Islam","alamat":"Jl. Bendungan","kelurahan":"Desa/Kel. Helumo","classroom":"3","ayah":"HABRI MAHMUD, S.Pd","ibu":"SISKAWATI MOHA","hp":"082193287879","layakPIP":"Tidak","sekolahAsal":"NUSA INDAH"},{"id":56,"name":"MOHAMAD RIDHO AMIR","nipd":"K.090","gender":"L","nisn":"3162471298","tempatLahir":"GORONTALO","tanggalLahir":"2016-05-17","nik":"7501141705160001","agama":"Islam","alamat":"Dusun Bendungan","kelurahan":"Helumo","classroom":"5","ayah":"Mansur Amir","ibu":"Samran Mointi","hp":"085240905879","layakPIP":"Ya","sekolahAsal":""},{"id":57,"name":"MOHAMAD RIVALDI TAIB","nipd":"K.069","gender":"L","nisn":"3155881545","tempatLahir":"GORONTALO","tanggalLahir":"2015-01-04","nik":"7501140401150001","agama":"Islam","alamat":"JL. Hj. Salim Manumba","kelurahan":"HELUMO","classroom":"6","ayah":"OMAN TAIB","ibu":"CINDRAWATI MANTULANGI","hp":"082346714156","layakPIP":"Ya","sekolahAsal":""},{"id":58,"name":"MOHAMAD ZULKARNAIN TAIB","nipd":"K.086","gender":"L","nisn":"3156301293","tempatLahir":"GORONTALO","tanggalLahir":"2015-09-22","nik":"7501142209150002","agama":"Islam","alamat":"JL. Hj. Salim Manumba","kelurahan":"HELUMO","classroom":"5","ayah":"GUGIANTO TAIB","ibu":"NASRAN A. NABU","hp":"085392054935","layakPIP":"Tidak","sekolahAsal":"NUSA INDAH"},{"id":59,"name":"MOHAMMAD ALIF","nipd":"K.084","gender":"L","nisn":"3154878767","tempatLahir":"GORONTALO","tanggalLahir":"2015-10-01","nik":"7501140110150001","agama":"Islam","alamat":"Jl. Bendungan","kelurahan":"PARIS","classroom":"5","ayah":"YOHANES FRANS","ibu":"FITRIYANTI TOMELO","hp":"082196218397","layakPIP":"Tidak","sekolahAsal":""},{"id":60,"name":"MOHAMMAD NIZAM ARSAD","nipd":"K.095","gender":"L","nisn":"0154907073","tempatLahir":"GORONTALO","tanggalLahir":"2015-06-02","nik":"7501140206150001","agama":"Islam","alamat":"Jln. Hj. Salim Manumba","kelurahan":"Helumo","classroom":"5","ayah":"Yusuf Arsyad","ibu":"Murtin Abdulah","hp":"085242705337","layakPIP":"Ya","sekolahAsal":"NUSA INDAH"},{"id":61,"name":"MUHAMMAD FAUZAN BUKOI","nipd":"K.070","gender":"L","nisn":"0156278336","tempatLahir":"KOTA GORONTALO","tanggalLahir":"2015-01-09","nik":"7501140901150001","agama":"Islam","alamat":"Jl. Hj. Salim Manumba","kelurahan":"Helumo","classroom":"6","ayah":"ISKAR I. BUKOI","ibu":"Wilindari Buloto","hp":"082310667821","layakPIP":"Ya","sekolahAsal":""},{"id":62,"name":"MURSIDIN MILE","nipd":"K.072","gender":"L","nisn":"0153399072","tempatLahir":"GORONTALO","tanggalLahir":"2015-03-21","nik":"7501142103150001","agama":"Islam","alamat":"Bendungan","kelurahan":"Paris","classroom":"6","ayah":"Rulin Mile","ibu":"Rahmawati S. Yatiti","hp":"082291649949","layakPIP":"Tidak","sekolahAsal":""},{"id":63,"name":"NAADHIRA MALIKI","nipd":"","gender":"P","nisn":"3194658368","tempatLahir":"GORONTALO","tanggalLahir":"2019-06-18","nik":"7501145806190002","agama":"Islam","alamat":"JLn Bendungan","kelurahan":"Desa/Kel. Helumo","classroom":"2","ayah":"KASIM I. MALIKI","ibu":"HERLINA TOMELO","hp":"","layakPIP":"Ya","sekolahAsal":"TK NEGERI NUSA INDAH"},{"id":64,"name":"NABILATUL ZAHRA BOBIHU","nipd":"L.024","gender":"P","nisn":"3186492595","tempatLahir":"GORONTALO","tanggalLahir":"2018-04-18","nik":"7501145804180001","agama":"Islam","alamat":"HJ. SALIM MANUMBA","kelurahan":"Desa/Kel. Helumo","classroom":"3","ayah":"BUYUNG A. BOBIHU","ibu":"ELEN BULOTO","hp":"085255285385","layakPIP":"Ya","sekolahAsal":"NUSA INDAH"},{"id":65,"name":"NATAN NANUE","nipd":"","gender":"L","nisn":"3165596431","tempatLahir":"GORONTALO UTARA","tanggalLahir":"2016-12-29","nik":"7505072912150002","agama":"Islam","alamat":"ABDULLAH AMU","kelurahan":"Desa/Kel. Motilango","classroom":"4","ayah":"ALAN B NANUE","ibu":"YULIANTI LUKAS","hp":"","layakPIP":"Ya","sekolahAsal":""},{"id":66,"name":"NIRMALA ISHAK BULOTO","nipd":"K.100","gender":"P","nisn":"3162875482","tempatLahir":"GORONTALO","tanggalLahir":"2016-02-13","nik":"7501145302160001","agama":"Islam","alamat":"JL. Hj. Salim Manumba","kelurahan":"HELUMO","classroom":"5","ayah":"ISHAK BULOTO","ibu":"AISA RAUF","hp":"085217729182","layakPIP":"Tidak","sekolahAsal":"NUSA INDAH"},{"id":67,"name":"NUR AULIA MANOPO","nipd":"","gender":"P","nisn":"3195635451","tempatLahir":"GORONTALO","tanggalLahir":"2019-08-10","nik":"7501145008190003","agama":"Islam","alamat":"Hj. Salim manumba","kelurahan":"Desa/Kel. Helumo","classroom":"1","ayah":"","ibu":"HESTI IGIRISA","hp":"","layakPIP":"Tidak","sekolahAsal":"TK Negeri Nusa Indah Kec. Mootilango"},{"id":68,"name":"NUR AULIA SALEH","nipd":"L.015","gender":"P","nisn":"3182471308","tempatLahir":"GORONTALO","tanggalLahir":"2018-01-19","nik":"7501145901180001","agama":"Islam","alamat":"HJ. SALIM MANUMBA","kelurahan":"Desa/Kel. Helumo","classroom":"3","ayah":"RIZKI SALEH","ibu":"JULAEHA KARIM","hp":"085282909158","layakPIP":"Ya","sekolahAsal":"NUSA INDAH"},{"id":69,"name":"NUR SALSABILA PANGERAN","nipd":"K.077","gender":"P","nisn":"3155198663","tempatLahir":"GORONTALO","tanggalLahir":"2015-04-23","nik":"7501146304150001","agama":"Islam","alamat":"JL. BULIA","kelurahan":"PARIS","classroom":"6","ayah":"SAIFUL PANGERAN","ibu":"NIKMA TOMELO","hp":"","layakPIP":"Ya","sekolahAsal":""},{"id":70,"name":"NURAINI HAIRI","nipd":"K.054","gender":"P","nisn":"3146670236","tempatLahir":"KABUPATEN GORONTALO","tanggalLahir":"2014-04-26","nik":"7501146604140001","agama":"Islam","alamat":"Jln. H. Salim Manumba","kelurahan":"Helumo","classroom":"6","ayah":"Ibrahim Hiairi","ibu":"FATMAH DJAFAR","hp":"085241237342","layakPIP":"Ya","sekolahAsal":""},{"id":71,"name":"NURHANIA ANTUNTU","nipd":"K.092","gender":"P","nisn":"3156279231","tempatLahir":"GORONTALO","tanggalLahir":"2015-12-30","nik":"7501147012150001","agama":"Islam","alamat":"Dusun Bendungan","kelurahan":"Helumo","classroom":"5","ayah":"Abdul Haris Antutu","ibu":"Nilan Rahim","hp":"082193533343","layakPIP":"Ya","sekolahAsal":""},{"id":72,"name":"NURMALIA ISA","nipd":"K.074","gender":"P","nisn":"0151296183","tempatLahir":"GORONTALO","tanggalLahir":"2015-05-14","nik":"7501145405150001","agama":"Islam","alamat":"JL. BULIA","kelurahan":"PARIS","classroom":"6","ayah":"IRPAN ISA","ibu":"SAFITRI MAHMUD","hp":"","layakPIP":"Tidak","sekolahAsal":""},{"id":73,"name":"RAFEL BUMULO","nipd":"","gender":"L","nisn":"3195911846","tempatLahir":"MANADO","tanggalLahir":"2019-05-15","nik":"7501141505190001","agama":"Islam","alamat":"JL. Hi. Salim Manumba","kelurahan":"Desa/Kel. Paris","classroom":"1","ayah":"FIRMAN BUMULO","ibu":"RAMLA Y. TOU","hp":"","layakPIP":"Tidak","sekolahAsal":"TK NEGERI PEMBINA KECAMATAN MOOTILANGO 1"},{"id":74,"name":"RAFI BUMULO","nipd":"L.007","gender":"L","nisn":"3165094405","tempatLahir":"GORONTALO","tanggalLahir":"2016-11-18","nik":"7501141811160001","agama":"Islam","alamat":"JL. BULIA","kelurahan":"Desa/Kel. Paris","classroom":"4","ayah":"FIRMAN BUMULO","ibu":"RAMLA Y. TOU","hp":"","layakPIP":"Tidak","sekolahAsal":"CENDANA II"},{"id":75,"name":"RAHIM PAHAR ALIHI","nipd":"","gender":"L","nisn":"3198572650","tempatLahir":"GORONTALO","tanggalLahir":"2019-02-08","nik":"7501140802190003","agama":"Islam","alamat":"BULIA","kelurahan":"Desa/Kel. Paris","classroom":"2","ayah":"PAHAR T. ALIHI","ibu":"RIYANTI KASIM","hp":"","layakPIP":"Tidak","sekolahAsal":"TK NEGERI PEMBINA KECAMATAN MOOTILANGO 1"},{"id":76,"name":"RAHMAT ABUBAKAR","nipd":"L.010","gender":"L","nisn":"3163939046","tempatLahir":"GORONTALO","tanggalLahir":"2016-12-04","nik":"7501140412160001","agama":"Islam","alamat":"JL. Hj. Salim Manumba","kelurahan":"Desa/Kel. Helumo","classroom":"4","ayah":"YUDIN ABUBAKAR","ibu":"AIS SULEMAN","hp":"","layakPIP":"Tidak","sekolahAsal":"NUSA INDAH"},{"id":77,"name":"RAHMAT MARUF","nipd":"K.087","gender":"L","nisn":"3153084088","tempatLahir":"GORONTALO","tanggalLahir":"2015-11-19","nik":"7501141911150003","agama":"Islam","alamat":"JL. Hj. Salim Manumba","kelurahan":"HELUMO","classroom":"4","ayah":"ARIPIN MARUF","ibu":"TUTI DUNGGIO","hp":"081243268595","layakPIP":"Tidak","sekolahAsal":"NUSA INDAH"},{"id":78,"name":"RAHMAT RAMADHAN LIHAWA","nipd":"","gender":"L","nisn":"3192621534","tempatLahir":"Gorontalo","tanggalLahir":"2019-05-07","nik":"7501140705190001","agama":"Islam","alamat":"Hj Salim Manumba","kelurahan":"Desa/Kel. Helumo","classroom":"1","ayah":"Yanto Lihawa","ibu":"Hawarianti A. Buheli","hp":"","layakPIP":"Tidak","sekolahAsal":"TK Negeri Nusa Indah Kec. Mootilango"},{"id":79,"name":"RAHMATIA BILQIS MUSTAPA","nipd":"","gender":"P","nisn":"3206669297","tempatLahir":"GORONTALO","tanggalLahir":"2020-02-20","nik":"7501146002200001","agama":"Islam","alamat":"Hj. Salim manumba","kelurahan":"Desa/Kel. Helumo","classroom":"1","ayah":"WEM MUSTAPA","ibu":"EMILIA DAI","hp":"","layakPIP":"Tidak","sekolahAsal":"TK Negeri Nusa Indah Kec. Mootilango"},{"id":80,"name":"RAMDAN NGGILU","nipd":"","gender":"L","nisn":"3184792077","tempatLahir":"Gorontalo","tanggalLahir":"2018-05-16","nik":"7501141605180001","agama":"Islam","alamat":"Hj. Salim Manumba","kelurahan":"Desa/Kel. Helumo","classroom":"2","ayah":"Nurdin Nggilu","ibu":"Salma kasim","hp":"","layakPIP":"Ya","sekolahAsal":"NUSA INDAH"},{"id":81,"name":"RASID DANIAL","nipd":"K.071","gender":"L","nisn":"0152447871","tempatLahir":"GORONTALO","tanggalLahir":"2015-02-15","nik":"7501141502150001","agama":"Islam","alamat":"Jln. Hj. Salim Manumba","kelurahan":"Helumo","classroom":"6","ayah":"Supriyanto Danial","ibu":"YUSNI LIJALI","hp":"082344387560","layakPIP":"Ya","sekolahAsal":""},{"id":82,"name":"RASYA SAPUTRA MATILA","nipd":"K.056","gender":"L","nisn":"0144303355","tempatLahir":"GORONTALO","tanggalLahir":"2014-05-17","nik":"7501141705140002","agama":"Islam","alamat":"JL. Hj. Salim Manumba","kelurahan":"Helumo","classroom":"6","ayah":"SAMSUDIN MATILA","ibu":"FARHA MOINTI","hp":"085341288537","layakPIP":"Ya","sekolahAsal":""},{"id":83,"name":"RAYSA ABAS","nipd":"","gender":"P","nisn":"0153880213","tempatLahir":"GORONTALO","tanggalLahir":"2015-05-05","nik":"7501144505150001","agama":"Islam","alamat":"DUSUN BULIA","kelurahan":"Desa/Kel. Paris","classroom":"5","ayah":"HERSON ABAS","ibu":"ALFIAN RAHMAN","hp":"","layakPIP":"Tidak","sekolahAsal":""},{"id":84,"name":"RAYSA ADELIA PAKAYA","nipd":"","gender":"P","nisn":"3192663807","tempatLahir":"Gorontalo","tanggalLahir":"2019-07-27","nik":"7501146707190001","agama":"Islam","alamat":"Hj. Salim Manumba","kelurahan":"Desa/Kel. Helumo","classroom":"1","ayah":"Yusuf Pakaya","ibu":"Risna Ahmad","hp":"","layakPIP":"Tidak","sekolahAsal":"TK Negeri Nusa Indah Kec. Mootilango"},{"id":85,"name":"REVANIA ANASTASYA MAHMUD","nipd":"","gender":"P","nisn":"3194652394","tempatLahir":"Gorontalo","tanggalLahir":"2019-01-30","nik":"7501147001190001","agama":"Islam","alamat":"Hj. Salim Manumba","kelurahan":"Desa/Kel. Helumo","classroom":"2","ayah":"Habri Mahmud","ibu":"Siskawati Moha","hp":"","layakPIP":"Tidak","sekolahAsal":"TK Negeri Nusa Indah Kec. Mootilango"},{"id":86,"name":"RIANI OCTAVIA YASIN","nipd":"","gender":"P","nisn":"3198289450","tempatLahir":"GORONTALO","tanggalLahir":"2019-10-01","nik":"7501144110190001","agama":"Islam","alamat":"Hj. Salim Manumba","kelurahan":"Desa/Kel. Helumo","classroom":"1","ayah":"NOLVI U. USMAN","ibu":"PRATIWI SIDIKI","hp":"","layakPIP":"Tidak","sekolahAsal":"TK Negeri Nusa Indah Kec. Mootilango"},{"id":87,"name":"SAKINAH RONI TUNA","nipd":"K.093","gender":"P","nisn":"3153132628","tempatLahir":"GORONTALO","tanggalLahir":"2015-12-18","nik":"7501145812150001","agama":"Islam","alamat":"JL. Hj. Salim Manumba","kelurahan":"HELUMO","classroom":"5","ayah":"RONI A TUNA","ibu":"YANTI MAJAALI","hp":"082346932562","layakPIP":"Tidak","sekolahAsal":"NUSA INDAH"},{"id":88,"name":"SHAFAR REYHAN TOMELO","nipd":"","gender":"L","nisn":"3187880216","tempatLahir":"Gorontalo","tanggalLahir":"2018-11-03","nik":"7501140311180001","agama":"Islam","alamat":"Hj.Salim manuma","kelurahan":"Desa/Kel. Helumo","classroom":"2","ayah":"Abdul Saman Tomelo","ibu":"Yanti Polapa","hp":"","layakPIP":"Tidak","sekolahAsal":"TK Negeri Nusa Indah Kec. Mootilango"},{"id":89,"name":"SITI AIRA YAHYA","nipd":"","gender":"P","nisn":"3206386010","tempatLahir":"Gorontalo","tanggalLahir":"2020-01-06","nik":"7571074601200001","agama":"Islam","alamat":"Hj. Salim Manumba","kelurahan":"Desa/Kel. Helumo","classroom":"1","ayah":"Reski Yahya","ibu":"Rusmin Antula","hp":"","layakPIP":"Tidak","sekolahAsal":"TK Negeri Nusa Indah Kec. Mootilango"},{"id":90,"name":"SITI ANISYA MA'RUF","nipd":"L.017","gender":"P","nisn":"3184743346","tempatLahir":"GORONTALO","tanggalLahir":"2018-01-05","nik":"7501144501180001","agama":"Islam","alamat":"BENDUNGAN","kelurahan":"Desa/Kel. Helumo","classroom":"3","ayah":"RAMLI MA'RUF","ibu":"OLWIN MUKMIN","hp":"085256194318","layakPIP":"Ya","sekolahAsal":"TK NEGERI PEMBINA KECAMATAN MOOTILANGO 1"},{"id":91,"name":"SITI NUR KHALIZAH SULEMAN","nipd":"","gender":"P","nisn":"3197116467","tempatLahir":"Gorontalo","tanggalLahir":"2019-05-25","nik":"7503066505190001","agama":"Islam","alamat":"Hj. Salim Manumba","kelurahan":"Desa/Kel. Helumo","classroom":"2","ayah":"Hamid Suleman","ibu":"Risna Adam","hp":"","layakPIP":"Tidak","sekolahAsal":"TK Negeri Nusa Indah Kec. Mootilango"},{"id":92,"name":"SRI DEYANTI ABDULLAH","nipd":"K.088","gender":"P","nisn":"3157392320","tempatLahir":"GORONTALO","tanggalLahir":"2015-12-19","nik":"7501145912150001","agama":"Islam","alamat":"JL. Hj. Salim Manumba","kelurahan":"HELUMO","classroom":"5","ayah":"ILHAM ABDULLAH","ibu":"MELIS MANTUNGE BUDIKO","hp":"083844614668","layakPIP":"Tidak","sekolahAsal":"NUSA INDAH"},{"id":93,"name":"SRI HASANA ABDUL RAHIM","nipd":"L.006","gender":"P","nisn":"3171050425","tempatLahir":"GORONTALO","tanggalLahir":"2017-01-17","nik":"7501105701170002","agama":"Islam","alamat":"JL. DUSUN 1","kelurahan":"Desa/Kel. Paris","classroom":"3","ayah":"","ibu":"ESMIN PAKAYA","hp":"","layakPIP":"Ya","sekolahAsal":"CENDANA II"},{"id":94,"name":"SYAHFITRI KHUMAIRAH","nipd":"K.061","gender":"P","nisn":"0147427021","tempatLahir":"GORONTALO","tanggalLahir":"2014-07-29","nik":"7501146907140001","agama":"Islam","alamat":"JL. BULIA","kelurahan":"PARIS","classroom":"6","ayah":"MOHAMAD LUTHER LAPIK","ibu":"TRISNAWATY ISA","hp":"082290606083","layakPIP":"Ya","sekolahAsal":""},{"id":95,"name":"TISYA HIDAYATI PAKAYA","nipd":"","gender":"P","nisn":"3205326773","tempatLahir":"Gorontalo","tanggalLahir":"2020-06-25","nik":"7501146506200001","agama":"Islam","alamat":"Hj. Salim Manumba","kelurahan":"Desa/Kel. Helumo","classroom":"1","ayah":"Syaipul Pakaya","ibu":"Elpian Mointi","hp":"","layakPIP":"Tidak","sekolahAsal":"TK Negeri Nusa Indah Kec. Mootilango"},{"id":96,"name":"TRISNAWATI MILE","nipd":"","gender":"P","nisn":"3190848200","tempatLahir":"GORONTALO","tanggalLahir":"2019-08-18","nik":"7501145808190001","agama":"Islam","alamat":"Hj. Salim Manumba","kelurahan":"Desa/Kel. Helumo","classroom":"1","ayah":"RAM MILE","ibu":"ISNA PONGOLIWU","hp":"","layakPIP":"Tidak","sekolahAsal":"TK Negeri Nusa Indah Kec. Mootilango"},{"id":97,"name":"ZAINA KANZA SAFIAH MA'RUF","nipd":"","gender":"P","nisn":"3201345534","tempatLahir":"Gorontalo","tanggalLahir":"2020-06-06","nik":"7501144606200001","agama":"Islam","alamat":"Hj. Salim Manumba","kelurahan":"Desa/Kel. Helumo","classroom":"1","ayah":"Yusrin Ma'ruf","ibu":"Yulan Buloto","hp":"","layakPIP":"Tidak","sekolahAsal":"TK Negeri Nusa Indah Kec. Mootilango"}];
+
+// ============================================================================
+// 2. DATABASE CAPAIAN PEMBELAJARAN (CP) BSKAP NOMOR 046/H/KR/2025
+// ============================================================================
+const CP_2025 = {
+  "Pendidikan Agama Islam & Budi Pekerti": {
+    "Fase A (Kelas 1–2)": [
+      {el:"Al-Qur'an Hadis", desc:"Memahami huruf hijaiah berharakat, huruf hijaiah bersambung, Surah al-Fatihah, beberapa surah pendek Al-Qur'an, dan hadis tentang kebersihan."},
+      {el:"Akidah", desc:"Memahami rukun iman, iman kepada Allah Swt., beberapa asmaulhusna, dan iman kepada malaikat."},
+      {el:"Akhlak", desc:"Memahami akhlak terhadap Allah Swt. dengan menyucikan dan memuji-Nya dan akhlak terhadap diri sendiri."},
+      {el:"Fikih", desc:"Memahami rukun Islam, syahadatain, tata cara bersuci, salat fardu, azan, ikamah, zikir, dan berdoa setelah salat."},
+      {el:"Sejarah Peradaban Islam", desc:"Memahami kisah beberapa nabi dan rasul."}
+    ],
+    "Fase B (Kelas 3–4)": [
+      {el:"Al-Qur'an Hadis", desc:"Memahami beberapa surah pendek, ayat Al-Qur'an dan hadis tentang kewajiban salat dan menjaga hubungan baik dengan sesama."},
+      {el:"Akidah", desc:"Memahami sifat-sifat Allah Swt., beberapa asmaulhusna, iman kepada kitab-kitab Allah Swt. dan rasul-rasul Allah Swt."},
+      {el:"Akhlak", desc:"Memahami akhlak terhadap Allah Swt. dengan berbaik sangka kepada-Nya, akhlak terhadap orang tua, keluarga, dan pendidik."},
+      {el:"Fikih", desc:"Memahami puasa, salat jumat dan salat sunah, balig dan tanggung jawab yang menyertainya (taklif)."},
+      {el:"Sejarah Peradaban Islam", desc:"Memahami kisah Nabi Muhammad saw. sebelum dan sesudah menjadi rasul periode Makkah."}
+    ],
+    "Fase C (Kelas 5–6)": [
+      {el:"Al-Qur'an Hadis", desc:"Memahami beberapa surah pendek dan ayat Al-Qur'an serta hadis tentang keragaman."},
+      {el:"Akidah", desc:"Memahami beberapa asmaulhusna, iman kepada hari akhir, qada dan qadr."},
+      {el:"Akhlak", desc:"Memahami akhlak terhadap Allah Swt. dengan berdoa dan bertawakal kepada-Nya, akhlak terhadap teman, tetangga, non muslim, hewan, dan tumbuhan."},
+      {el:"Fikih", desc:"Memahami puasa sunah, zakat, infak, sedekah, hadiah, makanan dan minuman yang halal dan haram."},
+      {el:"Sejarah Peradaban Islam", desc:"Memahami kisah Nabi Muhammad saw. periode Madinah dan khulafaurasyidin."}
+    ]
+  },
+  "Pendidikan Pancasila": {
+    "Fase A (Kelas 1–2)": [
+      {el:"Pancasila", desc:"Mengenal bendera negara, lagu kebangsaan, simbol dan sila-sila Pancasila dalam lambang negara Garuda Pancasila; menerapkan nilai-nilai Pancasila di lingkungan keluarga."},
+      {el:"UUD NRI Tahun 1945", desc:"Mengenal aturan di lingkungan keluarga; menunjukkan dan menceritakan sikap mematuhi aturan di lingkungan keluarga."},
+      {el:"Bhinneka Tunggal Ika", desc:"Mengenal semboyan Bhinneka Tunggal Ika; mengidentifikasi dan menghargai identitas dirinya sesuai jenis kelamin, hobi, bahasa, serta agama dan kepercayaan."},
+      {el:"NKRI", desc:"Mengenal karakteristik lingkungan tempat tinggal dan sekolah sebagai bagian dari wilayah NKRI; bekerja sama menjaga lingkungan sekitar."}
+    ],
+    "Fase B (Kelas 3–4)": [
+      {el:"Pancasila", desc:"Mengidentifikasi makna sila-sila Pancasila dan penerapannya dalam kehidupan sehari-hari; mengenal karakter para perumus Pancasila; bangga berbahasa Indonesia."},
+      {el:"UUD NRI Tahun 1945", desc:"Mengidentifikasi dan melaksanakan aturan di sekolah dan lingkungan tempat tinggal; menerapkan hak dan kewajiban sebagai anggota keluarga dan warga sekolah."},
+      {el:"Bhinneka Tunggal Ika", desc:"Membedakan dan menghargai identitas, keluarga, dan teman-temannya sesuai budaya, suku bangsa, bahasa, agama dan kepercayaannya."},
+      {el:"NKRI", desc:"Mengidentifikasi lingkungan tempat tinggal (RT, RW, desa/kelurahan, dan kecamatan) sebagai bagian wilayah NKRI; bekerja sama dalam keberagaman."}
+    ],
+    "Fase C (Kelas 5–6)": [
+      {el:"Pancasila", desc:"Memahami kronologi sejarah kelahiran Pancasila; meneladani sikap perumus Pancasila; menghubungkan sila-sila Pancasila sebagai satu kesatuan utuh."},
+      {el:"UUD NRI Tahun 1945", desc:"Mengimplementasikan norma, hak, dan kewajiban warga negara; mengenal Pembukaan UUD 1945; mempraktikkan musyawarah membuat kesepakatan bersama."},
+      {el:"Bhinneka Tunggal Ika", desc:"Menyajikan hasil identifikasi sikap menghormati, menjaga, dan melestarikan keberagaman budaya dalam bingkai Bhinneka Tunggal Ika."},
+      {el:"NKRI", desc:"Mengenal wilayahnya dalam konteks kabupaten/kota dan provinsi sebagai bagian NKRI; bergotong royong menjaga persatuan sebagai wujud bela negara."}
+    ]
+  },
+  "Bahasa Indonesia": {
+    "Fase A (Kelas 1–2)": [
+      {el:"Menyimak", desc:"Memahami informasi dari teks nonsastra berbentuk teks aural berupa percakapan tentang diri, keluarga, dan lingkungan sekitar; memahami pesan teks sastra aural."},
+      {el:"Membaca dan Memirsa", desc:"Membaca kata-kata sederhana dengan fasih dan memahami isi bacaan/tayangan tentang diri, keluarga, kesehatan, dan lingkungan sekitar."},
+      {el:"Berbicara & Mempresentasikan", desc:"Merespons dengan bertanya, menjawab, dan menanggapi komentar dengan santun; menceritakan kembali isi teks secara lisan."},
+      {el:"Menulis", desc:"Menulis permulaan dengan benar di atas kertas/media digital; menulis berbagai tipe teks sederhana dengan beberapa kalimat sederhana."}
+    ],
+    "Fase B (Kelas 3–4)": [
+      {el:"Menyimak", desc:"Memahami ide pokok suatu informasi dari teks nonsastra berbentuk teks aural dan memahami isi teks sastra berbentuk teks aural."},
+      {el:"Membaca dan Memirsa", desc:"Membaca kata-kata baru dengan fasih; memahami ide pokok, ide pendukung, pesan, dan informasi dalam teks sastra dan nonsastra cetak/elektronik."},
+      {el:"Berbicara & Mempresentasikan", desc:"Menyajikan pendapat dengan pilihan kata, gestur, volume, dan intonasi tepat; menanggapi diskusi; menceritakan kembali informasi."},
+      {el:"Menulis", desc:"Menulis berbagai tipe teks sederhana dengan rangkaian kalimat beragam; menggunakan kaidah kebahasaan dan kosakata baru bermakna denotatif."}
+    ],
+    "Fase C (Kelas 5–6)": [
+      {el:"Menyimak", desc:"Menganalisis informasi dari teks nonsastra berbentuk teks aural dan menganalisis isi teks sastra berbentuk teks aural."},
+      {el:"Membaca dan Memirsa", desc:"Membaca kata-kata berpola kombinasi huruf dengan fasih; menganalisis informasi serta nilai-nilai dalam teks visual/audiovisual."},
+      {el:"Berbicara & Mempresentasikan", desc:"Mempresentasikan gagasan secara efektif dan santun; menyampaikan perasaan berdasarkan fakta/imajinasi dengan kosakata kreatif."},
+      {el:"Menulis", desc:"Menulis berbagai tipe teks berdasarkan gagasan, pengamatan, pengalaman, atau imajinasi dengan kalimat kompleks dan kosakata denotatif/konotatif."}
+    ]
+  },
+  "Matematika": {
+    "Fase A (Kelas 1–2)": [
+      {el:"Bilangan", desc:"Pemahaman bilangan cacah sampai 100, nilai tempat, komposisi/dekomposisi, penjumlahan & pengurangan sampai 20, serta pecahan setengah dan seperempat."},
+      {el:"Aljabar", desc:"Memahami makna simbol '=' pada penjumlahan/pengurangan sampai 20; mengenali, meniru, dan melanjutkan pola bukan bilangan (gambar, warna, bunyi)."},
+      {el:"Pengukuran", desc:"Membandingkan panjang, berat, dan durasi waktu secara langsung; mengukur/mengestimasi panjang dan berat menggunakan satuan tidak baku."},
+      {el:"Geometri", desc:"Mengenal bangun datar (segitiga, segiempat, segi banyak, lingkaran) dan bangun ruang (balok, kubus, kerucut, bola) serta posisi benda."},
+      {el:"Analisis Data & Peluang", desc:"Mengurutkan, menyortir, mengelompokkan, dan menyajikan data menggunakan turus dan piktogram paling banyak 4 kategori."}
+    ],
+    "Fase B (Kelas 3–4)": [
+      {el:"Bilangan", desc:"Bilangan cacah sampai 10.000; operasi penjumlahan/pengurangan sampai 1.000; perkalian/pembagian sampai 100; kelipatan/faktor; pecahan senilai, desimal, persen."},
+      {el:"Aljabar", desc:"Menemukan nilai yang tidak diketahui dalam kalimat matematika penjumlahan/pengurangan sampai 100; mengembangkan pola gambar dan pola bilangan."},
+      {el:"Pengukuran", desc:"Mengukur panjang (cm, m) dan berat (g, kg) dengan satuan baku; mengestimasi luas dan volume menggunakan satuan tidak baku dan baku."},
+      {el:"Geometri", desc:"Mendeskripsikan ciri berbagai bentuk bangun datar; menyusun (komposisi) dan mengurai (dekomposisi) bangun datar dengan lebih dari satu cara."},
+      {el:"Analisis Data & Peluang", desc:"Mengurutkan, menyajikan, dan menginterpretasi data dalam bentuk tabel, diagram gambar, piktogram, dan diagram batang (skala satu satuan)."}
+    ],
+    "Fase C (Kelas 5–6)": [
+      {el:"Bilangan", desc:"Bilangan cacah sampai 1.000.000; masalah uang; operasi hitung sampai 100.000; KPK & FPB; operasi pecahan campuran dan perbandingan desimal."},
+      {el:"Aljabar", desc:"Nilai belum diketahui pada operasi cacah sampai 1.000; pola bilangan perkalian/pembagian; bernalar proporsional dengan rasio satuan."},
+      {el:"Pengukuran", desc:"Menentukan keliling dan luas bangun datar serta gabungannya; menghitung durasi waktu dan mengukur besar sudut."},
+      {el:"Geometri", desc:"Mengkonstruksi dan mengurai bangun ruang (kubus, balok, gabungannya); visualisasi spasial; menentukan lokasi pada peta berpetak."},
+      {el:"Analisis Data & Peluang", desc:"Menyajikan dan menganalisis data dalam piktogram, diagram batang, dan tabel frekuensi; menentukan peluang kejadian dalam percobaan acak."}
+    ]
+  },
+  "Ilmu Pengetahuan Alam dan Sosial (IPAS)": {
+    "Fase B (Kelas 3–4)": [
+      {el:"Pemahaman IPAS", desc:"Pancaindra; siklus hidup makhluk hidup & pelestarian SDA; perubahan wujud zat; bentuk & perubahan energi; jenis gaya; peran & interaksi sosial; peta kabupaten/provinsi; bentang alam & profesi; sejarah lokal; nilai mata uang."},
+      {el:"Keterampilan Proses", desc:"Mengamati fenomena; mempertanyakan & memprediksi; merencanakan & melakukan penyelidikan sederhana; memproses data (turus/diagram); mengevaluasi & mengomunikasikan hasil."}
+    ],
+    "Fase C (Kelas 5–6)": [
+      {el:"Pemahaman IPAS", desc:"Sistem organ tubuh manusia; ekosistem (biotik-abiotik); gelombang bunyi & cahaya; penghematan energi & energi alternatif; tata surya, rotasi & revolusi bumi; geografis Indonesia; perjuangan pahlawan lokal; keragaman budaya & ekonomi masyarakat."},
+      {el:"Keterampilan Proses", desc:"Mengamati persamaan/perbedaan; merumuskan pertanyaan ilmiah; penyelidikan mandiri; mengolah data tabel & grafik; refleksi perbaikan & komunikasi hasil berargumen."}
+    ]
+  },
+  "Bahasa Inggris": {
+    "Fase B (Kelas 3–4)": [
+      {el:"Menyimak - Berbicara", desc:"Memahami dan merespons teks lisan atau teks multimodal sederhana tentang kehidupan sehari-hari secara verbal atau non-verbal sesuai konteks."},
+      {el:"Membaca - Memirsa", desc:"Memahami teks tulis pendek sederhana atau teks multimodal tentang kehidupan sehari-hari dan meresponsnya sesuai konteks."},
+      {el:"Menulis - Mempresentasikan", desc:"Mengomunikasikan gagasan tentang topik sehari-hari dalam teks tulis pendek atau teks multimodal sesuai konteks."}
+    ],
+    "Fase C (Kelas 5–6)": [
+      {el:"Menyimak - Berbicara", desc:"Memahami alur informasi teks secara keseluruhan dan merespons teks lisan/multimodal topik sehari-hari dengan kalimat pendek sederhana."},
+      {el:"Membaca - Memirsa", desc:"Memahami alur informasi, gagasan utama, dan informasi rinci dari beragam teks pendek atau teks multimodal tentang topik sehari-hari."},
+      {el:"Menulis - Mempresentasikan", desc:"Mengomunikasikan ide dan pengalamannya melalui berbagai jenis teks tulis sederhana atau teks multimodal tentang topik sehari-hari."}
+    ]
+  },
+  "PJOK": {
+    "Fase A (Kelas 1–2)": [
+      {el:"Terampil Bergerak", desc:"Mempraktikkan keterampilan gerak fundamental dan menerapkannya dalam berbagai situasi gerak; mengeksplorasi strategi dan konsep gerak."},
+      {el:"Belajar Melalui Gerak", desc:"Menaati peraturan untuk menumbuhkan fair play; menerapkan strategi kolaborasi dalam aktivitas jasmani."},
+      {el:"Bergaya Hidup Aktif", desc:"Berpartisipasi dalam berbagai aktivitas jasmani dan mengidentifikasi manfaatnya."},
+      {el:"Memilih Hidup Menyehatkan", desc:"Mengenali gaya hidup aktif, makanan bergizi seimbang, serta situasi berisiko keselamatan dan cara mencari bantuan."}
+    ],
+    "Fase B (Kelas 3–4)": [
+      {el:"Terampil Bergerak", desc:"Menghaluskan keterampilan gerak fundamental pada situasi gerak baru; menyesuaikan strategi gerak; memperagakan rangkaian gerak."},
+      {el:"Belajar Melalui Gerak", desc:"Menerapkan strategi gerak sederhana, memecahkan masalah gerak, menjunjung fair play, dan berpartisipasi aktif dalam tim."},
+      {el:"Bergaya Hidup Aktif", desc:"Berpartisipasi dalam aktivitas jasmani dan mengenali faktor-faktor yang membuat aktivitas jasmani menyenangkan."},
+      {el:"Memilih Hidup Menyehatkan", desc:"Mengenali risiko kesehatan gaya hidup, pola makan bergizi seimbang, serta mempraktikkan pertolongan pertama cedera ringan."}
+    ],
+    "Fase C (Kelas 5–6)": [
+      {el:"Terampil Bergerak", desc:"Menyesuaikan dan mentransfer strategi gerak ke berbagai situasi berbeda; menginvestigasi konsep gerak untuk meningkatkan capaian."},
+      {el:"Belajar Melalui Gerak", desc:"Menguji efektivitas strategi gerak, merancang modifikasi permainan inklusif, dan menjalankan berbagai peran dalam tim."},
+      {el:"Bergaya Hidup Aktif", desc:"Menjelaskan pengaruh aktivitas jasmani teratur terhadap kesehatan dan pencegahan perilaku sedenter."},
+      {el:"Memilih Hidup Menyehatkan", desc:"Menghubungkan gaya hidup dengan risiko kesehatan, pola makan berdasar informasi gizi, serta penanganan cedera sedang."}
+    ]
+  },
+  "Koding & Kecerdasan Artifisial (KA)": {
+    "Fase C (Kelas 5–6)": [
+      {el:"Berpikir Komputasional", desc:"Memahami permasalahan sederhana sehari-hari, menerapkan pemecahan masalah secara sistematis, serta menuliskan instruksi logis dan terstruktur."},
+      {el:"Literasi Digital", desc:"Memahami konsep dasar & dampak teknologi digital, sistem komputer pradasar, pengamanan informasi pribadi daring, dan produksi konten teks/gambar."},
+      {el:"Literasi & Etika KA", desc:"Memahami konsep KA sederhana, prinsip KA untuk kesejahteraan manusia, perbedaan penginderaan manusia vs komputer, serta etika empati dalam penggunaan KA."},
+      {el:"Pemanfaatan & Pengembangan KA", desc:"Menyimulasikan kerja KA saat mengenali pola, mengklasifikasi benda konkret berdasarkan sifatnya, dan memahami pengaruh input terhadap prediksi KA."}
+    ]
+  },
+  "Seni Budaya (Musik, Rupa, Tari, Teater)": {
+    "Fase A (Kelas 1–2)": [
+      {el:"Seni Musik", desc:"Mengenali unsur nada & irama; umpan balik bahasa sehari-hari; menirukan pola irama/nada; membuat pola irama tubuh/ritmis; ekspresi senang bermusik."},
+      {el:"Seni Rupa", desc:"Mengenali unsur rupa benda sekitar; mengapresiasi karya diri; menguji coba alat/bahan; membuat karya berdasar pengamatan lingkungan."},
+      {el:"Seni Tari", desc:"Mengenal tari sebagai komunikasi; eksplorasi gerak, ruang, tenaga, waktu; meragakan gerak percaya diri; merangkai gerak sederhana."},
+      {el:"Seni Teater", desc:"Meniru gerak tubuh & suara untuk emosi; mengenal properti permainan peran; memainkan lakon tokoh sekitar/rekaan."}
+    ],
+    "Fase B (Kelas 3–4)": [
+      {el:"Seni Musik", desc:"Mengenali nada & pola irama; umpan balik menggunakan istilah musik; menirukan melodi; merawat alat musik; membuat bunyi ritmis/melodis."},
+      {el:"Seni Rupa", desc:"Mengidentifikasi unsur rupa & prinsip desain; mengapresiasi karya diri & teman; menguji prosedur alat/bahan; karya mewakili harapan."},
+      {el:"Seni Tari", desc:"Mengamati penyajian tari & level gerak/arah hadap; bekerja kooperatif dalam kelompok; mengembangkan gerak dengan level & arah hadap."},
+      {el:"Seni Teater", desc:"Teknik dasar akting melalui mimesis; menggunakan properti sesuai tokoh; mengamati peran sekitar dan memainkan lakon cerita."}
+    ],
+    "Fase C (Kelas 5–6)": [
+      {el:"Seni Musik", desc:"Menerapkan unsur musik (nada, irama, melodi); eksplorasi tempo & notasi dasar; menciptakan pola irama berbasis kearifan lokal."},
+      {el:"Seni Rupa", desc:"Menjelaskan unsur rupa & prinsip desain; variasi teknik alat/bahan; menciptakan karya berbasis pengamatan dan pengembangan imajinasi."},
+      {el:"Seni Tari", desc:"Mengamati tari tradisi dan unsur pendukungnya; meragakan rangkaian gerak aktif berkelompok; merangkai gerak dengan desain kelompok."},
+      {el:"Seni Teater", desc:"Permainan peran berkelompok & improvisasi; mengulas penokohan/perwatakan; memerankan lakon individu/kelompok berdasar pengamatan."}
+    ]
+  }
+};
+
+// ============================================================================
+// 3. STATE MANAGEMENT (LOCALSTORAGE DENGAN SEED DATA OTOMATIS)
+// ============================================================================
+const store = {
+  get(key, fallback) {
+    const raw = localStorage.getItem("agt_v2_" + key);
+    if (!raw) return fallback;
+    try { return JSON.parse(raw); } catch { return fallback; }
+  },
+  set(key, val) {
+    localStorage.setItem("agt_v2_" + key, JSON.stringify(val));
+  }
+};
+
+// Inisialisasi data pertama kali dari file sekolah
+if (!localStorage.getItem("agt_v2_students")) store.set("students", INITIAL_STUDENTS);
+if (!localStorage.getItem("agt_v2_staff")) store.set("staff", INITIAL_STAFF);
+if (!localStorage.getItem("agt_v2_tp")) {
+  store.set("tp", [
+    {id:101, fase:"Fase B (Kelas 3–4)", mapel:"Matematika", kelas:"4", kode:"MTK.B.1", tp:"Murid mampu membaca, menulis, menentukan nilai tempat, dan membandingkan bilangan cacah sampai 10.000.", alokasi:"8 JP"},
+    {id:102, fase:"Fase B (Kelas 3–4)", mapel:"IPAS", kelas:"4", kode:"IPAS.B.1", tp:"Murid mampu menjelaskan bentuk dan fungsi pancaindra serta cara merawat kesehatan pancaindra.", alokasi:"6 JP"},
+    {id:103, fase:"Fase C (Kelas 5–6)", mapel:"Koding & Kecerdasan Artifisial (KA)", kelas:"5", kode:"KKA.C.1", tp:"Murid mampu menyusun instruksi logis bertahap untuk menyelesaikan masalah sehari-hari secara unplugged.", alokasi:"4 JP"}
+  ]);
+}
+if (!localStorage.getItem("agt_v2_docs")) store.set("docs", []);
+if (!localStorage.getItem("agt_v2_attendance")) store.set("attendance", []);
+if (!localStorage.getItem("agt_v2_grades")) store.set("grades", []);
+if (!localStorage.getItem("agt_v2_journals")) store.set("journals", []);
+
+let currentPage = "dashboard";
+let selectedSubject = "Matematika";
+let selectedFase = "Fase B (Kelas 3–4)";
+
+const $ = s => document.querySelector(s);
+function esc(s){ return String(s??"").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+function openModal(title, html){ $("#modalTitle").textContent = title; $("#modalBody").innerHTML = html; $("#modal").classList.add("show"); }
+function closeModal(){ $("#modal").classList.remove("show"); }
+
+function pageHeader(title, desc, actions="") {
+  return `<div class="page-head">
+    <div><h1>${title}</h1><div class="sub">${desc}</div></div>
+    <div class="actions">${actions}</div>
+  </div>`;
+}
+
+// ============================================================================
+// 4. HALAMAN: DASHBOARD UTAMA
+// ============================================================================
+function renderDashboard() {
+  const students = store.get("students", []);
+  const staff = store.get("staff", []);
+  const att = store.get("attendance", []);
+  const grades = store.get("grades", []);
+  const journals = store.get("journals", []);
+  const tps = store.get("tp", []);
+
+  const totalL = students.filter(s => s.gender === "L").length;
+  const totalP = students.filter(s => s.gender === "P").length;
+  const totalPIP = students.filter(s => s.layakPIP === "Ya").length;
+
+  const classCounts = [1,2,3,4,5,6].map(k => ({
+    kelas: k,
+    total: students.filter(s => String(s.classroom) === String(k)).length,
+    l: students.filter(s => String(s.classroom) === String(k) && s.gender === "L").length,
+    p: students.filter(s => String(s.classroom) === String(k) && s.gender === "P").length
+  }));
+  const maxClass = Math.max(...classCounts.map(c => c.total), 1);
+
+  return `
+    ${pageHeader("Dashboard Administrasi Terpadu", `Selamat datang di Sistem Informasi Pembelajaran & Administrasi • ${SCHOOL.name}`,
+      `<button class="btn" onclick="window.print()">🖨️ Cetak Ringkasan</button>
+       <button class="btn primary" onclick="go('students')">👥 Kelola 97 Siswa</button>`
+    )}
+
+    <div class="grid-4">
+      <div class="card stat-card">
+        <div class="stat-top"><span class="stat-label">Total Peserta Didik</span><div class="stat-ico" style="background:#eff6ff;color:#2563eb">👥</div></div>
+        <div class="stat">${students.length}</div>
+        <small class="sub">Laki-laki: <b>${totalL}</b> • Perempuan: <b>${totalP}</b></small>
+      </div>
+      <div class="card stat-card">
+        <div class="stat-top"><span class="stat-label">Pendidik & Tendik (PTK)</span><div class="stat-ico" style="background:#ecfdf5;color:#059669">👔</div></div>
+        <div class="stat">${staff.length}</div>
+        <small class="sub">3 PNS • 5 PPPK • 1 GTT</small>
+      </div>
+      <div class="card stat-card">
+        <div class="stat-top"><span class="stat-label">Usulan Layak PIP</span><div class="stat-ico" style="background:#fef3c7;color:#d97706">🎓</div></div>
+        <div class="stat">${totalPIP}</div>
+        <small class="sub">Siswa terverifikasi layak PIP</small>
+      </div>
+      <div class="card stat-card">
+        <div class="stat-top"><span class="stat-label">Aktivitas Tersimpan</span><div class="stat-ico" style="background:#f3e8ff;color:#7c3aed">📑</div></div>
+        <div class="stat">${tps.length + att.length + grades.length + journals.length}</div>
+        <small class="sub">${tps.length} TP • ${att.length} Presensi • ${grades.length} Nilai</small>
+      </div>
+    </div>
+
+    <div class="section grid-2">
+      <div class="card">
+        <h2>📊 Distribusi Peserta Didik per Rombel (Kelas 1–6)</h2>
+        ${classCounts.map(c => `
+          <div class="bar-row">
+            <div class="bar-label">Kelas ${c.kelas}</div>
+            <div class="bar-track"><div class="bar-fill" style="width:${(c.total/maxClass)*100}%"></div></div>
+            <div class="bar-val">${c.total} <span style="font-weight:400;font-size:11px">(${c.l}L/${c.p}P)</span></div>
+          </div>
+        `).join("")}
+      </div>
+
+      <div class="card">
+        <h2>🏫 Profil Satuan Pendidikan</h2>
+        <table style="margin-top:6px">
+          <tr><td style="width:38%;color:var(--muted)">Nama Sekolah</td><td><b>${SCHOOL.name}</b></td></tr>
+          <tr><td style="color:var(--muted)">NPSN</td><td><span class="tag blue">${SCHOOL.npsn}</span></td></tr>
+          <tr><td style="color:var(--muted)">Alamat</td><td>${SCHOOL.address}</td></tr>
+          <tr><td style="color:var(--muted)">Kepala Sekolah</td><td><b>${SCHOOL.headmaster}</b><br><small class="sub">NIP. ${SCHOOL.headmasterNip}</small></td></tr>
+          <tr><td style="color:var(--muted)">Acuan Kurikulum</td><td><span class="tag green">Keputusan BSKAP No. 046/H/KR/2025</span></td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>⚡ Akses Cepat Perangkat Guru</h2>
+      <div class="menu-grid">
+        ${[
+          ["curriculum","🎯","CP, TP & ATP 2025","Akses langsung CP terbaru 2025 & susun Tujuan Pembelajaran."],
+          ["attendance","✅","Presensi Harian","Catat kehadiran siswa per rombel kelas 1–6."],
+          ["grades","📈","Daftar Nilai & Rapor","Input nilai formatif, sumatif, STS, SAS, & cetak leger."],
+          ["journal","✍️","Jurnal Mengajar","Dokumentasi pelaksanaan pembelajaran & refleksi harian."],
+          ["module","📖","Modul Ajar / RPP","Buat dan simpan perangkat ajar berbasis pembelajaran mendalam."],
+          ["supervision","📋","Paket Siap Supervisi","Cek kelengkapan administrasi akademik siap cetak."]
+        ].map(m => `
+          <button class="menu-tile" onclick="go('${m[0]}')">
+            <span class="tile-ico">${m[1]}</span>
+            <b>${m[2]}</b>
+            <small>${m[3]}</small>
+          </button>
+        `).join("")}
+      </div>
+    </div>
+  `;
+}
+
+// ============================================================================
+// 5. HALAMAN: DATA PESERTA DIDIK (97 SISWA)
+// ============================================================================
+function renderStudents() {
+  const students = store.get("students", []);
+  return `
+    ${pageHeader("Data Peserta Didik (Dapodik)", `Total ${students.length} siswa aktif terdaftar di ${SCHOOL.name}.`,
+      `<button class="btn primary" onclick="openStudentForm()">+ Tambah Siswa</button>
+       <button class="btn" onclick="exportCSV('students')">📥 Ekspor CSV</button>`
+    )}
+    <div class="card">
+      <div class="form-grid-3">
+        <div class="field" style="margin:0">
+          <label>Filter Rombel / Kelas</label>
+          <select id="fClass" onchange="filterStudentTable()">
+            <option value="">Semua Kelas (${students.length} siswa)</option>
+            ${[1,2,3,4,5,6].map(k => {
+              const cnt = students.filter(s => String(s.classroom)===String(k)).length;
+              return `<option value="${k}">Kelas ${k} (${cnt} siswa)</option>`;
+            }).join("")}
+          </select>
+        </div>
+        <div class="field" style="margin:0">
+          <label>Filter Status PIP</label>
+          <select id="fPIP" onchange="filterStudentTable()">
+            <option value="">Semua Status</option>
+            <option value="Ya">Layak PIP (Ya)</option>
+            <option value="Tidak">Tidak</option>
+          </select>
+        </div>
+        <div class="field" style="margin:0">
+          <label>Cari Nama / NISN / NIK / Orang Tua</label>
+          <input id="fSearch" placeholder="Ketik kata kunci..." oninput="filterStudentTable()">
+        </div>
+      </div>
+    </div>
+
+    <div class="section table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Nama Peserta Didik</th>
+            <th>NIPD / NISN</th>
+            <th>L/P</th>
+            <th>Kelas</th>
+            <th>Tempat, Tgl Lahir</th>
+            <th>Orang Tua (Ayah / Ibu)</th>
+            <th>PIP</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody id="studentTbody">${buildStudentRows(students)}</tbody>
+      </table>
+    </div>
+  `;
+}
+
+function buildStudentRows(list) {
+  if (!list.length) return `<tr><td colspan="9" class="empty">Tidak ada data peserta didik yang sesuai filter.</td></tr>`;
+  return list.map((s, idx) => `
+    <tr>
+      <td>${idx + 1}</td>
+      <td>
+        <b>${esc(s.name)}</b><br>
+        <small class="sub">${esc(s.alamat || "-")} • ${esc(s.kelurahan || "")}</small>
+      </td>
+      <td><span class="tag gray">${esc(s.nipd || "-")}</span><br><small class="sub">${esc(s.nisn || "-")}</small></td>
+      <td><span class="tag ${s.gender==='L'?'blue':'gold'}">${esc(s.gender)}</span></td>
+      <td><b>Kelas ${esc(s.classroom)}</b></td>
+      <td>${esc(s.tempatLahir)},<br><small class="sub">${esc(s.tanggalLahir)}</small></td>
+      <td><small>A: ${esc(s.ayah || "-")}<br>I: ${esc(s.ibu || "-")}</small></td>
+      <td>${s.layakPIP === 'Ya' ? '<span class="tag green">Layak PIP</span>' : '<span class="tag gray">Tidak</span>'}</td>
+      <td style="white-space:nowrap">
+        <button class="btn sm" onclick="viewStudent(${s.id})">Detail</button>
+        <button class="btn sm" onclick="openStudentForm(${s.id})">Edit</button>
+        <button class="btn sm danger" onclick="deleteStudent(${s.id})">Hapus</button>
+      </td>
+    </tr>
+  `).join("");
+}
+
+function filterStudentTable() {
+  const c = $("#fClass")?.value || "";
+  const pip = $("#fPIP")?.value || "";
+  const q = ($("#fSearch")?.value || "").toLowerCase();
+  const filtered = store.get("students", []).filter(s => {
+    const matchC = !c || String(s.classroom) === c;
+    const matchP = !pip || s.layakPIP === pip;
+    const hay = `${s.name} ${s.nisn} ${s.nipd} ${s.nik} ${s.ayah} ${s.ibu} ${s.alamat}`.toLowerCase();
+    return matchC && matchP && hay.includes(q);
+  });
+  $("#studentTbody").innerHTML = buildStudentRows(filtered);
+}
+
+function viewStudent(id) {
+  const s = store.get("students", []).find(x => x.id === id);
+  if (!s) return;
+  openModal("Biodata Lengkap Peserta Didik", `
+    <table>
+      <tr><td style="width:35%;color:var(--muted)">Nama Lengkap</td><td><b>${esc(s.name)}</b></td></tr>
+      <tr><td style="color:var(--muted)">NIPD / NISN</td><td>${esc(s.nipd || "-")} / ${esc(s.nisn || "-")}</td></tr>
+      <tr><td style="color:var(--muted)">NIK</td><td>${esc(s.nik || "-")}</td></tr>
+      <tr><td style="color:var(--muted)">Rombel Saat Ini</td><td><b>Kelas ${esc(s.classroom)}</b></td></tr>
+      <tr><td style="color:var(--muted)">Jenis Kelamin / Agama</td><td>${s.gender==='L'?'Laki-laki':'Perempuan'} / ${esc(s.agama || "Islam")}</td></tr>
+      <tr><td style="color:var(--muted)">Tempat, Tanggal Lahir</td><td>${esc(s.tempatLahir)}, ${esc(s.tanggalLahir)}</td></tr>
+      <tr><td style="color:var(--muted)">Alamat / Desa</td><td>${esc(s.alamat)}, ${esc(s.kelurahan)}</td></tr>
+      <tr><td style="color:var(--muted)">Nama Ayah / Ibu</td><td>${esc(s.ayah || "-")} / ${esc(s.ibu || "-")}</td></tr>
+      <tr><td style="color:var(--muted)">No. HP Orang Tua</td><td>${esc(s.hp || "-")}</td></tr>
+      <tr><td style="color:var(--muted)">Sekolah Asal (TK/PAUD)</td><td>${esc(s.sekolahAsal || "-")}</td></tr>
+      <tr><td style="color:var(--muted)">Status Layak PIP</td><td>${esc(s.layakPIP || "Tidak")}</td></tr>
+    </table>
+  `);
+}
+
+function openStudentForm(id=null) {
+  const s = id ? store.get("students", []).find(x => x.id === id) : {};
+  openModal(id ? "Edit Data Peserta Didik" : "Tambah Peserta Didik Baru", `
+    <form onsubmit="saveStudent(event, ${id||'null'})">
+      <div class="field"><label>Nama Lengkap</label><input name="name" required value="${esc(s.name||'')}"></div>
+      <div class="form-grid-3">
+        <div class="field"><label>NIPD</label><input name="nipd" value="${esc(s.nipd||'')}"></div>
+        <div class="field"><label>NISN</label><input name="nisn" value="${esc(s.nisn||'')}"></div>
+        <div class="field"><label>NIK</label><input name="nik" value="${esc(s.nik||'')}"></div>
+      </div>
+      <div class="form-grid-3">
+        <div class="field"><label>Kelas</label>
+          <select name="classroom">${[1,2,3,4,5,6].map(k=>`<option value="${k}" ${String(s.classroom)===String(k)?'selected':''}>Kelas ${k}</option>`).join("")}</select>
+        </div>
+        <div class="field"><label>Jenis Kelamin</label>
+          <select name="gender">
+            <option value="L" ${s.gender==='L'?'selected':''}>Laki-laki (L)</option>
+            <option value="P" ${s.gender==='P'?'selected':''}>Perempuan (P)</option>
+          </select>
+        </div>
+        <div class="field"><label>Layak PIP</label>
+          <select name="layakPIP">
+            <option value="Tidak" ${s.layakPIP==='Tidak'?'selected':''}>Tidak</option>
+            <option value="Ya" ${s.layakPIP==='Ya'?'selected':''}>Ya</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-grid">
+        <div class="field"><label>Tempat Lahir</label><input name="tempatLahir" value="${esc(s.tempatLahir||'Gorontalo')}"></div>
+        <div class="field"><label>Tanggal Lahir</label><input type="date" name="tanggalLahir" value="${esc(s.tanggalLahir||'')}"></div>
+      </div>
+      <div class="form-grid">
+        <div class="field"><label>Nama Ayah</label><input name="ayah" value="${esc(s.ayah||'')}"></div>
+        <div class="field"><label>Nama Ibu</label><input name="ibu" value="${esc(s.ibu||'')}"></div>
+      </div>
+      <div class="form-grid">
+        <div class="field"><label>Alamat</label><input name="alamat" value="${esc(s.alamat||'Desa Helumo')}"></div>
+        <div class="field"><label>No. HP Orang Tua</label><input name="hp" value="${esc(s.hp||'')}"></div>
+      </div>
+      <button class="btn primary" type="submit">💾 Simpan Data Siswa</button>
+    </form>
+  `);
+}
+
+function saveStudent(e, id) {
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  const list = store.get("students", []);
+  const obj = {
+    id: id || Date.now(),
+    name: fd.get("name").toUpperCase(),
+    nipd: fd.get("nipd"),
+    nisn: fd.get("nisn"),
+    nik: fd.get("nik"),
+    classroom: fd.get("classroom"),
+    gender: fd.get("gender"),
+    layakPIP: fd.get("layakPIP"),
+    tempatLahir: fd.get("tempatLahir"),
+    tanggalLahir: fd.get("tanggalLahir"),
+    ayah: fd.get("ayah"),
+    ibu: fd.get("ibu"),
+    alamat: fd.get("alamat"),
+    kelurahan: "Desa/Kel. Helumo",
+    hp: fd.get("hp"),
+    agama: "Islam",
+    sekolahAsal: ""
+  };
+  if (id) {
+    const idx = list.findIndex(x => x.id === id);
+    if (idx > -1) list[idx] = {...list[idx], ...obj};
+  } else {
+    list.push(obj);
+  }
+  store.set("students", list);
+  closeModal();
+  render();
+}
+
+function deleteStudent(id) {
+  if (!confirm("Hapus data peserta didik ini?")) return;
+  store.set("students", store.get("students", []).filter(x => x.id !== id));
+  render();
+}
+
+// ============================================================================
+// 6. HALAMAN: DATA KEPEGAWAIAN (PTK)
+// ============================================================================
+function renderStaff() {
+  const staff = store.get("staff", []);
+  return `
+    ${pageHeader("Data Umum Kepegawaian (PTK)", "Keadaan PTK September 2026 • SD Negeri 2 Mootilango",
+      `<button class="btn primary" onclick="openStaffForm()">+ Tambah PTK</button>
+       <button class="btn" onclick="exportCSV('staff')">📥 Ekspor CSV</button>`
+    )}
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Nama PTK & NIP</th>
+            <th>L/P</th>
+            <th>Kedudukan / Tugas</th>
+            <th>Status & Gol</th>
+            <th>Ijazah Terakhir</th>
+            <th>Beban / Masa Kerja</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${staff.map((p, i) => `
+            <tr>
+              <td>${i+1}</td>
+              <td><b>${esc(p.name)}</b><br><small class="sub">NIP. ${esc(p.nip)}</small></td>
+              <td>${esc(p.jk)}</td>
+              <td><span class="tag blue">${esc(p.role)}</span><br><small class="sub">${esc(p.alamat)}</small></td>
+              <td><span class="tag ${p.status==='PNS'?'green':p.status==='PPPK'?'gold':'gray'}">${esc(p.status)}</span> ${esc(p.gol!=='—'?'('+p.gol+')':'')}</td>
+              <td>${esc(p.ijazah)}</td>
+              <td><b>${esc(p.jp)}</b><br><small class="sub">${esc(p.masaKerja)}</small></td>
+              <td><button class="btn sm" onclick="openStaffForm(${p.id})">Edit</button></td>
+            </tr>
+          `).join("")}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+function openStaffForm(id=null) {
+  const p = id ? store.get("staff", []).find(x => x.id === id) : {};
+  openModal(id ? "Edit Data PTK" : "Tambah Data PTK", `
+    <form onsubmit="saveStaff(event, ${id||'null'})">
+      <div class="field"><label>Nama Lengkap & Gelar</label><input name="name" required value="${esc(p.name||'')}"></div>
+      <div class="form-grid">
+        <div class="field"><label>NIP</label><input name="nip" value="${esc(p.nip||'—')}"></div>
+        <div class="field"><label>Kedudukan / Tugas</label><input name="role" required value="${esc(p.role||'')}"></div>
+      </div>
+      <div class="form-grid-3">
+        <div class="field"><label>Status</label>
+          <select name="status">${['PNS','PPPK','GTT','PTT'].map(st=>`<option ${p.status===st?'selected':''}>${st}</option>`).join("")}</select>
+        </div>
+        <div class="field"><label>Golongan</label><input name="gol" value="${esc(p.gol||'—')}"></div>
+        <div class="field"><label>Beban Mengajar</label><input name="jp" value="${esc(p.jp||'24 JP')}"></div>
+      </div>
+      <div class="form-grid">
+        <div class="field"><label>Ijazah / Tahun</label><input name="ijazah" value="${esc(p.ijazah||'')}"></div>
+        <div class="field"><label>Alamat</label><input name="alamat" value="${esc(p.alamat||'Desa Helumo')}"></div>
+      </div>
+      <button class="btn primary" type="submit">💾 Simpan Data PTK</button>
+    </form>
+  `);
+}
+
+function saveStaff(e, id) {
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  const list = store.get("staff", []);
+  const obj = {
+    id: id || Date.now(),
+    name: fd.get("name"), nip: fd.get("nip"), role: fd.get("role"),
+    status: fd.get("status"), gol: fd.get("gol"), jp: fd.get("jp"),
+    ijazah: fd.get("ijazah"), alamat: fd.get("alamat"), jk:"P", masaKerja:"—"
+  };
+  if (id) {
+    const idx = list.findIndex(x => x.id === id);
+    if (idx > -1) list[idx] = {...list[idx], ...obj};
+  } else list.push(obj);
+  store.set("staff", list);
+  closeModal(); render();
+}
+
+// ============================================================================
+// 7. HALAMAN: CAPAIAN PEMBELAJARAN (CP 2025) & TUJUAN PEMBELAJARAN (TP / ATP)
+// ============================================================================
+function renderCurriculum() {
+  const subjects = Object.keys(CP_2025);
+  const phases = Object.keys(CP_2025[selectedSubject] || {});
+  if (!phases.includes(selectedFase)) selectedFase = phases[0];
+  const cpItems = (CP_2025[selectedSubject] && CP_2025[selectedSubject][selectedFase]) || [];
+  const tps = store.get("tp", []);
+
+  return `
+    ${pageHeader("Capaian Pembelajaran (CP 2025), TP & ATP", "Referensi resmi Keputusan Kepala BSKAP No. 046/H/KR/2025 untuk SD/MI",
+      `<button class="btn primary" onclick="openTPForm()">+ Susun Tujuan Pembelajaran (TP)</button>`
+    )}
+
+    <div class="card">
+      <h2>📚 Penjelajah Capaian Pembelajaran (BSKAP 046/H/KR/2025)</h2>
+      <div class="form-grid" style="margin-bottom:14px">
+        <div class="field" style="margin:0">
+          <label>Pilih Mata Pelajaran</label>
+          <select onchange="selectedSubject=this.value;render()">
+            ${subjects.map(m => `<option value="${esc(m)}" ${m===selectedSubject?'selected':''}>${esc(m)}</option>`).join("")}
+          </select>
+        </div>
+        <div class="field" style="margin:0">
+          <label>Pilih Fase Pembelajaran</label>
+          <select onchange="selectedFase=this.value;render()">
+            ${phases.map(f => `<option value="${esc(f)}" ${f===selectedFase?'selected':''}>${esc(f)}</option>`).join("")}
+          </select>
+        </div>
+      </div>
+
+      ${cpItems.map(item => `
+        <div class="cp-box">
+          <h4>Elemen: ${esc(item.el)}</h4>
+          <p>${esc(item.desc)}</p>
+        </div>
+      `).join("")}
+    </div>
+
+    <div class="section card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <h2 style="margin:0">🎯 Daftar Tujuan Pembelajaran (TP) & Alur (ATP)</h2>
+        <button class="btn sm" onclick="exportCSV('tp')">📥 Ekspor TP/ATP</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Kode TP</th><th>Fase / Kelas</th><th>Mata Pelajaran</th><th>Rumusan Tujuan Pembelajaran (TP)</th><th>Alokasi</th><th>Aksi</th></tr></thead>
+          <tbody>
+            ${tps.length ? tps.map(t => `
+              <tr>
+                <td><span class="tag blue">${esc(t.kode)}</span></td>
+                <td>${esc(t.fase)}<br><small class="sub">Kelas ${esc(t.kelas)}</small></td>
+                <td><b>${esc(t.mapel)}</b></td>
+                <td>${esc(t.tp)}</td>
+                <td><span class="tag green">${esc(t.alokasi)}</span></td>
+                <td><button class="btn sm danger" onclick="deleteTP(${t.id})">Hapus</button></td>
+              </tr>
+            `).join("") : `<tr><td colspan="6" class="empty">Belum ada rumusan TP tersimpan.</td></tr>`}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+}
+
+function openTPForm() {
+  openModal("Susun Tujuan Pembelajaran (TP) Baru", `
+    <form onsubmit="saveTP(event)">
+      <div class="form-grid-3">
+        <div class="field"><label>Kode TP</label><input name="kode" required placeholder="Contoh: MTK.B.2"></div>
+        <div class="field"><label>Fase</label>
+          <select name="fase">
+            <option>Fase A (Kelas 1–2)</option>
+            <option selected>Fase B (Kelas 3–4)</option>
+            <option>Fase C (Kelas 5–6)</option>
+          </select>
+        </div>
+        <div class="field"><label>Target Kelas</label>
+          <select name="kelas">${[1,2,3,4,5,6].map(k=>`<option value="${k}">Kelas ${k}</option>`).join("")}</select>
+        </div>
+      </div>
+      <div class="form-grid">
+        <div class="field"><label>Mata Pelajaran</label>
+          <select name="mapel">${Object.keys(CP_2025).map(m=>`<option ${m===selectedSubject?'selected':''}>${esc(m)}</option>`).join("")}</select>
+        </div>
+        <div class="field"><label>Alokasi Waktu</label><input name="alokasi" value="6 JP"></div>
+      </div>
+      <div class="field"><label>Rumusan Tujuan Pembelajaran (Kompetensi + Lingkup Materi)</label>
+        <textarea name="tp" rows="3" required placeholder="Tuliskan rumusan TP berdasarkan elemen CP..."></textarea>
+      </div>
+      <button class="btn primary" type="submit">💾 Simpan TP ke ATP</button>
+    </form>
+  `);
+}
+
+function saveTP(e) {
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  const tps = store.get("tp", []);
+  tps.push({
+    id: Date.now(), kode: fd.get("kode"), fase: fd.get("fase"),
+    kelas: fd.get("kelas"), mapel: fd.get("mapel"),
+    alokasi: fd.get("alokasi"), tp: fd.get("tp")
+  });
+  store.set("tp", tps);
+  closeModal(); render();
+}
+
+function deleteTP(id) {
+  store.set("tp", store.get("tp", []).filter(x => x.id !== id));
+  render();
+}
+
+// ============================================================================
+// 8. HALAMAN: PRESENSI HARIAN PER ROMBEL
+// ============================================================================
+function renderAttendance() {
+  const records = store.get("attendance", []);
+  return `
+    ${pageHeader("Presensi Peserta Didik", "Pencatatan kehadiran harian dan rekapitulasi per kelas.",
+      `<button class="btn primary" onclick="openBatchAttendance()">✅ Input Presensi per Kelas</button>
+       <button class="btn" onclick="exportCSV('attendance')">📥 Ekspor CSV</button>`
+    )}
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Tanggal</th><th>Kelas</th><th>Nama Peserta Didik</th><th>Status Kehadiran</th><th>Keterangan</th></tr></thead>
+        <tbody>
+          ${records.length ? records.slice().reverse().map(r => `
+            <tr>
+              <td>${esc(r.date)}</td>
+              <td>Kelas ${esc(r.classroom)}</td>
+              <td><b>${esc(r.student)}</b></td>
+              <td><span class="tag ${r.status==='Hadir'?'green':r.status==='Sakit'?'gold':r.status==='Izin'?'blue':'red'}">${esc(r.status)}</span></td>
+              <td>${esc(r.note || "-")}</td>
+            </tr>
+          `).join("") : `<tr><td colspan="5" class="empty">Belum ada catatan presensi. Klik "Input Presensi per Kelas" untuk mengisi absensi rombel.</td></tr>`}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+function openBatchAttendance() {
+  const students = store.get("students", []);
+  const today = new Date().toISOString().slice(0,10);
+  openModal("Input Presensi Rombel", `
+    <form onsubmit="saveBatchAttendance(event)">
+      <div class="form-grid">
+        <div class="field"><label>Tanggal</label><input type="date" name="date" value="${today}" required></div>
+        <div class="field"><label>Pilih Kelas</label>
+          <select id="attClassSel" name="classroom" onchange="updateAttStudentList()">
+            ${[1,2,3,4,5,6].map(k=>`<option value="${k}">Kelas ${k}</option>`).join("")}
+          </select>
+        </div>
+      </div>
+      <div id="attStudentList" style="max-height:320px;overflow:auto;border:1px solid var(--line);border-radius:10px;padding:10px;margin-bottom:14px"></div>
+      <button class="btn primary" type="submit">💾 Simpan Presensi Kelas</button>
+    </form>
+  `);
+  updateAttStudentList();
+}
+
+function updateAttStudentList() {
+  const k = $("#attClassSel").value;
+  const list = store.get("students", []).filter(s => String(s.classroom) === String(k));
+  $("#attStudentList").innerHTML = list.map((s, i) => `
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 4px;border-bottom:1px solid #f1f5f9">
+      <span style="font-size:13px"><b>${i+1}.</b> ${esc(s.name)}</span>
+      <select name="st_${s.id}" style="width:120px;padding:5px 8px">
+        <option value="Hadir">Hadir</option>
+        <option value="Sakit">Sakit</option>
+        <option value="Izin">Izin</option>
+        <option value="Alpa">Alpa</option>
+      </select>
+    </div>
+  `).join("");
+}
+
+function saveBatchAttendance(e) {
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  const date = fd.get("date");
+  const k = fd.get("classroom");
+  const students = store.get("students", []).filter(s => String(s.classroom) === String(k));
+  const records = store.get("attendance", []);
+  students.forEach(s => {
+    records.push({
+      id: Date.now() + s.id,
+      date, classroom: k, student: s.name,
+      status: fd.get("st_" + s.id) || "Hadir",
+      note: ""
+    });
+  });
+  store.set("attendance", records);
+  closeModal(); render();
+}
+
+// ============================================================================
+// 9. HALAMAN: DAFTAR NILAI & RAPOR
+// ============================================================================
+function renderGrades() {
+  const grades = store.get("grades", []);
+  return `
+    ${pageHeader("Daftar Nilai & Pengolahan Rapor", "Rekap penilaian Formatif, Sumatif Lingkup Materi, STS, dan SAS.",
+      `<button class="btn primary" onclick="openGradeForm()">+ Input Nilai Siswa</button>
+       <button class="btn" onclick="exportCSV('grades')">📥 Ekspor Leger CSV</button>`
+    )}
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Tanggal</th><th>Kelas</th><th>Nama Peserta Didik</th><th>Mata Pelajaran</th><th>Jenis</th><th>Nilai</th><th>Predikat</th></tr></thead>
+        <tbody>
+          ${grades.length ? grades.slice().reverse().map(g => {
+            const v = Number(g.score);
+            const pred = v >= 90 ? "A (Sangat Baik)" : v >= 80 ? "B (Baik)" : v >= 70 ? "C (Cukup)" : "D (Perlu Bimbingan)";
+            return `<tr>
+              <td>${esc(g.date)}</td>
+              <td>Kelas ${esc(g.classroom)}</td>
+              <td><b>${esc(g.student)}</b></td>
+              <td>${esc(g.subject)}</td>
+              <td><span class="tag blue">${esc(g.type)}</span></td>
+              <td><b>${v}</b></td>
+              <td><span class="tag ${v>=75?'green':'gold'}">${pred}</span></td>
+            </tr>`;
+          }).join("") : `<tr><td colspan="7" class="empty">Belum ada data nilai tersimpan. Klik "+ Input Nilai Siswa".</td></tr>`}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+function openGradeForm() {
+  const students = store.get("students", []);
+  openModal("Input Nilai Peserta Didik", `
+    <form onsubmit="saveGrade(event)">
+      <div class="field"><label>Pilih Peserta Didik</label>
+        <select name="studentId" required>
+          ${students.map(s=>`<option value="${s.id}">[Kelas ${s.classroom}] ${esc(s.name)}</option>`).join("")}
+        </select>
+      </div>
+      <div class="form-grid">
+        <div class="field"><label>Mata Pelajaran</label>
+          <select name="subject">${Object.keys(CP_2025).map(m=>`<option>${esc(m)}</option>`).join("")}</select>
+        </div>
+        <div class="field"><label>Jenis Asesmen</label>
+          <select name="type"><option>Formatif</option><option>Sumatif Lingkup Materi</option><option>STS (Tengah Semester)</option><option>SAS (Akhir Semester)</option><option>Proyek / Praktik</option></select>
+        </div>
+      </div>
+      <div class="form-grid">
+        <div class="field"><label>Nilai (0–100)</label><input type="number" name="score" min="0" max="100" required></div>
+        <div class="field"><label>Tanggal</label><input type="date" name="date" value="${new Date().toISOString().slice(0,10)}" required></div>
+      </div>
+      <button class="btn primary" type="submit">💾 Simpan Nilai</button>
+    </form>
+  `);
+}
+
+function saveGrade(e) {
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  const st = store.get("students", []).find(s => String(s.id) === fd.get("studentId"));
+  const grades = store.get("grades", []);
+  grades.push({
+    id: Date.now(), date: fd.get("date"),
+    classroom: st?.classroom || "-", student: st?.name || "-",
+    subject: fd.get("subject"), type: fd.get("type"), score: fd.get("score")
+  });
+  store.set("grades", grades);
+  closeModal(); render();
+}
+
+// ============================================================================
+// 10. HALAMAN: JURNAL MENGAJAR HARIAN
+// ============================================================================
+function renderJournals() {
+  const list = store.get("journals", []);
+  return `
+    ${pageHeader("Jurnal Mengajar Harian", "Catatan pelaksanaan pembelajaran, ketercapaian TP, dan refleksi kelas.",
+      `<button class="btn primary" onclick="openJournalForm()">+ Tambah Jurnal</button>
+       <button class="btn" onclick="exportCSV('journals')">📥 Ekspor CSV</button>`
+    )}
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Tanggal</th><th>Kelas / Mapel</th><th>Materi / Tujuan Pembelajaran</th><th>Refleksi & Tindak Lanjut</th></tr></thead>
+        <tbody>
+          ${list.length ? list.slice().reverse().map(j => `
+            <tr>
+              <td style="white-space:nowrap">${esc(j.date)}</td>
+              <td><b>Kelas ${esc(j.classroom)}</b><br><span class="tag blue">${esc(j.subject)}</span></td>
+              <td>${esc(j.topic)}</td>
+              <td>${esc(j.reflection)}</td>
+            </tr>
+          `).join("") : `<tr><td colspan="4" class="empty">Belum ada catatan jurnal mengajar.</td></tr>`}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+function openJournalForm() {
+  openModal("Catat Jurnal Mengajar", `
+    <form onsubmit="saveJournal(event)">
+      <div class="form-grid-3">
+        <div class="field"><label>Tanggal</label><input type="date" name="date" value="${new Date().toISOString().slice(0,10)}" required></div>
+        <div class="field"><label>Kelas</label><select name="classroom">${[1,2,3,4,5,6].map(k=>`<option value="${k}">Kelas ${k}</option>`).join("")}</select></div>
+        <div class="field"><label>Mata Pelajaran</label><select name="subject">${Object.keys(CP_2025).map(m=>`<option>${esc(m)}</option>`).join("")}</select></div>
+      </div>
+      <div class="field"><label>Materi Pokok / Tujuan Pembelajaran (TP)</label><textarea name="topic" rows="2" required></textarea></div>
+      <div class="field"><label>Catatan Pelaksanaan, Kendala & Refleksi</label><textarea name="reflection" rows="3" required></textarea></div>
+      <button class="btn primary" type="submit">💾 Simpan Jurnal</button>
+    </form>
+  `);
+}
+
+function saveJournal(e) {
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  const list = store.get("journals", []);
+  list.push({
+    id: Date.now(), date: fd.get("date"), classroom: fd.get("classroom"),
+    subject: fd.get("subject"), topic: fd.get("topic"), reflection: fd.get("reflection")
+  });
+  store.set("journals", list);
+  closeModal(); render();
+}
+
+// ============================================================================
+// 11. HALAMAN: DOKUMEN PERENCANAAN, MODUL AJAR, LKPD, BANK SOAL, SUPERVISI
+// ============================================================================
+function renderDocManager(category, title, desc) {
+  const docs = store.get("docs", []).filter(d => d.category === category);
+  return `
+    ${pageHeader(title, desc, `<button class="btn primary" onclick="openDocForm('${category}','${title}')">+ Buat Dokumen Baru</button>`)}
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Judul Dokumen</th><th>Kelas & Mapel</th><th>Semester</th><th>Ringkasan Isi</th><th>Aksi</th></tr></thead>
+        <tbody>
+          ${docs.length ? docs.map(d => `
+            <tr>
+              <td><b>${esc(d.title)}</b></td>
+              <td>Kelas ${esc(d.classroom)} • ${esc(d.subject)}</td>
+              <td><span class="tag blue">${esc(d.semester)}</span></td>
+              <td>${esc(d.body.slice(0,110))}...</td>
+              <td style="white-space:nowrap">
+                <button class="btn sm" onclick="viewDoc(${d.id})">Lihat / Cetak</button>
+                <button class="btn sm danger" onclick="deleteDoc(${d.id})">Hapus</button>
+              </td>
+            </tr>
+          `).join("") : `<tr><td colspan="5" class="empty">Belum ada dokumen ${title} tersimpan. Klik "+ Buat Dokumen Baru".</td></tr>`}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+function openDocForm(category, label) {
+  openModal(`Buat ${label}`, `
+    <form onsubmit="saveDoc(event, '${category}')">
+      <div class="field"><label>Judul Dokumen</label><input name="title" required placeholder="Contoh: Modul Ajar Bab 1 - Bilangan Cacah"></div>
+      <div class="form-grid-3">
+        <div class="field"><label>Kelas</label><select name="classroom">${[1,2,3,4,5,6].map(k=>`<option value="${k}">Kelas ${k}</option>`).join("")}</select></div>
+        <div class="field"><label>Mata Pelajaran</label><select name="subject">${Object.keys(CP_2025).map(m=>`<option>${esc(m)}</option>`).join("")}</select></div>
+        <div class="field"><label>Tahun / Semester</label><input name="semester" value="2026/2027 - Ganjil"></div>
+      </div>
+      <div class="field"><label>Isi / Rancangan Perangkat</label><textarea name="body" rows="6" required placeholder="Tuliskan tujuan pembelajaran, langkah kegiatan (memahami, mengaplikasi, merefleksi), dan asesmen..."></textarea></div>
+      <button class="btn primary" type="submit">💾 Simpan Dokumen</button>
+    </form>
+  `);
+}
+
+function saveDoc(e, category) {
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  const docs = store.get("docs", []);
+  docs.push({
+    id: Date.now(), category, title: fd.get("title"),
+    classroom: fd.get("classroom"), subject: fd.get("subject"),
+    semester: fd.get("semester"), body: fd.get("body")
+  });
+  store.set("docs", docs);
+  closeModal(); render();
+}
+
+function viewDoc(id) {
+  const d = store.get("docs", []).find(x => x.id === id);
+  if (!d) return;
+  openModal(d.title, `
+    <div style="margin-bottom:12px">
+      <span class="tag blue">Kelas ${esc(d.classroom)}</span>
+      <span class="tag green">${esc(d.subject)}</span>
+      <span class="tag gray">${esc(d.semester)}</span>
+    </div>
+    <div style="white-space:pre-wrap;background:#f8fafc;padding:16px;border-radius:12px;border:1px solid var(--line);line-height:1.7">${esc(d.body)}</div>
+    <div class="actions" style="margin-top:16px"><button class="btn primary" onclick="window.print()">🖨️ Cetak Dokumen</button></div>
+  `);
+}
+
+function deleteDoc(id) {
+  store.set("docs", store.get("docs", []).filter(x => x.id !== id));
+  render();
+}
+
+function renderSupervision() {
+  const items = [
+    ["Kalender Pendidikan & Jadwal Pelajaran", true],
+    ["Analisis CP (BSKAP 046/2025), TP, dan ATP", store.get("tp",[]).length > 0],
+    ["Program Tahunan (Prota) & Program Semester (Promes)", store.get("docs",[]).some(d=>d.category==='planning')],
+    ["Modul Ajar / RPP Pembelajaran Mendalam", store.get("docs",[]).some(d=>d.category==='module')],
+    ["Lembar Kerja Peserta Didik (LKPD)", store.get("docs",[]).some(d=>d.category==='lkpd')],
+    ["Bank Soal & Kisi-Kisi Asesmen Sumatif / STS / SAS", store.get("docs",[]).some(d=>d.category==='questions')],
+    ["Daftar Hadir / Presensi Peserta Didik (97 Siswa)", store.get("attendance",[]).length > 0],
+    ["Daftar Nilai & Pengolahan Rapor", store.get("grades",[]).length > 0],
+    ["Jurnal Mengajar & Refleksi Harian", store.get("journals",[]).length > 0]
+  ];
+  const ready = items.filter(x => x[1]).length;
+  return `
+    ${pageHeader("Paket Siap Supervisi Akademik", `Kesiapan dokumen supervisi kepala sekolah: ${ready} dari ${items.length} komponen terpenuhi.`,
+      `<button class="btn primary" onclick="window.print()">🖨️ Cetak Lembar Kontrol Supervisi</button>`
+    )}
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>No</th><th>Komponen Administrasi Pembelajaran</th><th>Status Kesiapan</th></tr></thead>
+        <tbody>
+          ${items.map((it, i) => `
+            <tr>
+              <td>${i+1}</td>
+              <td><b>${it[0]}</b></td>
+              <td>${it[1] ? '<span class="tag green">✔ Tersedia</span>' : '<span class="tag gold">⏳ Belum Diisi</span>'}</td>
+            </tr>
+          `).join("")}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+function renderSettings() {
+  return `
+    ${pageHeader("Pengaturan & Pencadangan Data", "Kelola cadangan data JSON perangkat Anda.")}
+    <div class="card">
+      <h2>💾 Backup & Reset Data Lokal</h2>
+      <p class="sub">Seluruh 97 data siswa, 9 data PTK, serta catatan presensi, nilai, dan perangkat ajar tersimpan aman di penyimpanan browser perangkat ini.</p>
+      <div class="actions" style="margin-top:14px">
+        <button class="btn primary" onclick="backupJSON()">📥 Unduh Backup Lengkap (.JSON)</button>
+        <button class="btn danger" onclick="resetDefault()">🔄 Kembalikan Data Awal Sekolah</button>
+      </div>
+    </div>
+  `;
+}
+
+function backupJSON() {
+  const payload = {
+    school: SCHOOL,
+    exportedAt: new Date().toISOString(),
+    students: store.get("students", []),
+    staff: store.get("staff", []),
+    tp: store.get("tp", []),
+    docs: store.get("docs", []),
+    attendance: store.get("attendance", []),
+    grades: store.get("grades", []),
+    journals: store.get("journals", [])
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], {type:"application/json"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "backup_admin_guru_sdn2_mootilango.json";
+  a.click();
+}
+
+function resetDefault() {
+  if (!confirm("Kembalikan database ke data awal 97 siswa dan 9 PTK SD Negeri 2 Mootilango?")) return;
+  store.set("students", INITIAL_STUDENTS);
+  store.set("staff", INITIAL_STAFF);
+  render();
+}
+
+function exportCSV(kind) {
+  const arr = store.get(kind, []);
+  if (!arr.length) return alert("Belum ada data untuk diekspor.");
+  const keys = Object.keys(arr[0]);
+  const csv = [keys, ...arr.map(o => keys.map(k => o[k]))]
+    .map(r => r.map(v => '"' + String(v??"").replace(/"/g,'""') + '"').join(",")).join("\r\n");
+  const blob = new Blob(["\ufeff" + csv], {type:"text/csv;charset=utf-8"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = `${kind}_sdn2_mootilango.csv`;
+  a.click();
+}
+
+// ============================================================================
+// 12. ROUTING NAVIGASI
+// ============================================================================
+function render() {
+  const map = {
+    dashboard: renderDashboard,
+    students: renderStudents,
+    staff: renderStaff,
+    curriculum: renderCurriculum,
+    planning: () => renderDocManager("planning", "Prota, Promes & Silabus", "Perencanaan program tahunan, semester, dan alur silabus."),
+    module: () => renderDocManager("module", "Modul Ajar / RPP", "Perangkat ajar terintegrasi pendekatan pembelajaran mendalam."),
+    lkpd: () => renderDocManager("lkpd", "Lembar Kerja Peserta Didik (LKPD)", "Lembar aktivitas belajar murid per pertemuan."),
+    questions: () => renderDocManager("questions", "Bank Soal & Asesmen", "Kumpulan kisi-kisi, soal harian, STS, dan SAS."),
+    templates: () => renderDocManager("templates", "Template Administrasi Kelas", "Buku induk, jadwal pelajaran, denah kelas, dan inventaris."),
+    attendance: renderAttendance,
+    grades: renderGrades,
+    journal: renderJournals,
+    supervision: renderSupervision,
+    settings: renderSettings
+  };
+  $("#content").innerHTML = (map[currentPage] || renderDashboard)();
+  document.querySelectorAll("nav button").forEach(b => b.classList.toggle("active", b.dataset.page === currentPage));
+}
+
+function go(p) {
+  currentPage = p;
+  render();
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+
+$("#nav").addEventListener("click", e => {
+  const btn = e.target.closest("button[data-page]");
+  if (btn) go(btn.dataset.page);
+});
+
+render();
+</script>
+</body>
+</html>
